@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "AcademiaServerApplication",
+      "request": "launch",
+      "mainClass": "com.academia.server.AcademiaServerApplication",
+      "projectName": "server",
+      "env": {
+        "DB_URL": "jdbc:postgresql://localhost:5432/academia_certa?currentSchema=academia_certa,estoque_certo,public",
+        "DB_USER": "postgres",
+        "DB_PASSWORD": "admin",
+        "zenite_jwt_auth": "minha_chave_super_secreta_da_academia_certa_2026_jwt",
+        "encrypt_private_key": ""
+      }
+    }
+  ]
+}
