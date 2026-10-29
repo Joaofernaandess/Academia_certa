@@ -112,32 +112,34 @@ public class AuthRepository extends BaseRepository {
     }
 
     public boolean buscarUltimoCodigo(UUID usuarioId, LocalDateTime dataSolicitacao, Integer minutosCooldown, int quantidadeMinima) throws SQLException {
-        String sql = """
+        StringBuilder sql = new StringBuilder("""
             SELECT COUNT(1) >= ?
             FROM (
                 SELECT 1
                 FROM codigo_acesso
                 WHERE usuario_id = ?
                   AND data_solicitacao > ?
-                  AND (? IS NULL OR data_solicitacao > ? - (? * INTERVAL '1 minute'))
-                LIMIT ?
-            ) codigos;
-        """;
-        try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
-            Timestamp agora = Timestamp.valueOf(DateTimeHelper.saoPaulo());
-            cmd.setInt(1, quantidadeMinima);
-            cmd.setObject(2, usuarioId);
-            cmd.setTimestamp(3, Timestamp.valueOf(dataSolicitacao));
+        """);
+
+        if (minutosCooldown != null) {
+            sql.append(" AND data_solicitacao > ? ");
+        }
+
+        sql.append(" LIMIT ? ) codigos;");
+
+        try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql.toString())) {
+            int idx = 1;
+            cmd.setInt(idx++, quantidadeMinima);
+            cmd.setObject(idx++, usuarioId);
+            cmd.setTimestamp(idx++, Timestamp.valueOf(dataSolicitacao));
+
             if (minutosCooldown != null) {
-                cmd.setInt(4, minutosCooldown);
-                cmd.setTimestamp(5, agora);
-                cmd.setInt(6, minutosCooldown);
-            } else {
-                cmd.setNull(4, Types.INTEGER);
-                cmd.setTimestamp(5, agora);
-                cmd.setNull(6, Types.INTEGER);
+                LocalDateTime limiteCooldown = DateTimeHelper.saoPaulo().minusMinutes(minutosCooldown);
+                cmd.setTimestamp(idx++, Timestamp.valueOf(limiteCooldown));
             }
-            cmd.setInt(7, quantidadeMinima);
+
+            cmd.setInt(idx, quantidadeMinima);
+
             try (ResultSet rs = cmd.executeQuery()) {
                 return rs.next() && rs.getBoolean(1);
             }

@@ -3,14 +3,14 @@ version: '3.8'
 services:
   postgres-academia:
     image: postgres:16-alpine
-    container_name: pg-academia
+    container_name: academia_certa
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
-      POSTGRES_DB: gestao_academia
+      POSTGRES_DB: academia_certa
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - pgdata_academia:/var/lib/postgresql/data
 

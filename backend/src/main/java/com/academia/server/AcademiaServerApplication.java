@@ -18,4 +18,4 @@ public class AcademiaServerApplication {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-}   
+}

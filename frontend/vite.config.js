@@ -17,9 +17,9 @@ export default defineConfig(({ mode }) => {
         includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
         manifest: {
           id: '/',
-          name: 'Estoque Certo',
-          short_name: 'Estoque Certo',
-          description: 'Sistema de gestão de estoque da Zênite',
+          name: 'Academia Certa',
+          short_name: 'Academia Certa',
+          description: 'Sistema de gestão de academias',
           start_url: '/',
           scope: '/',
           theme_color: '#D4AF37',
