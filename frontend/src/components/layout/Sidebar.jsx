@@ -39,6 +39,8 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
 
                     <div className="sidebar-nav">
                         <NavLink to="/" end onClick={closeMenu}>Início</NavLink>
+                        <NavLink to="/equipamentos" onClick={closeMenu}>Equipamentos</NavLink>
+                        <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
 
                         {isAdmin && (
                             <NavLink to="/aprovar-usuarios" onClick={closeMenu}>Aprovar Usuários</NavLink>

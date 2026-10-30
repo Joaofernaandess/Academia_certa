@@ -1,6 +1,9 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AprovarUnidadeOrganizacionalView from '../components/AprovarEmpresasView';
 import ValidarUsuariosView from '../components/ValidarUsuariosView';
+import EquipamentosPage from '../pages/equipamentos/EquipamentosPage';
+import NovoEquipamentoPage from '../pages/equipamentos/NovoEquipamentoPage';
+import FeedbackEquipamentoPage from '../pages/feedback/FeedbackEquipamentoPage';
 import HomeHero from '../pages/home/HomeHero';
 import InstallIosPage from '../pages/home/InstallIosPage';
 import ProfilePage from '../pages/home/ProfilePage';
@@ -14,17 +17,23 @@ export default function AuthenticatedRoutes({
     onChangeProfile,
     onSubmitProfile,
     token,
+    unidadeOrganizacionalId,
+    usuarioId,
     isSavingProfile
 }) {
     return (
         <Routes>
             <Route index element={<HomeHero />} />
-            
+
+            <Route path="equipamentos" element={<EquipamentosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
+            <Route path="equipamentos/novo" element={<NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
+            <Route path="feedback" element={<FeedbackEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} />} />
+
             <Route path="aprovar-usuarios" element={isAdmin ? <ValidarUsuariosView token={token} /> : <Navigate to="/" replace />} />
             <Route path="aprovar-empresas" element={isAdmin ? <AprovarUnidadeOrganizacionalView token={token} /> : <Navigate to="/" replace />} />
-            
+
             <Route path="instalar-ios" element={<InstallIosPage />} />
-            
+
             <Route
                 path="meus-dados"
                 element={
@@ -39,7 +48,7 @@ export default function AuthenticatedRoutes({
                     />
                 }
             />
-            
+
             <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
     );

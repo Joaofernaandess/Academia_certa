@@ -1,0 +1,117 @@
+/* =========================================================
+   ESTILOS ESPECÍFICOS - ACADEMIA CERTA
+   ========================================================= */
+
+/* Botão de Ação Principal Centralizado na Barra Inferior */
+.academia-action-btn-main {
+    width: 65%;
+    max-width: 280px;
+    margin: 0 auto;
+}
+
+/* Card de Equipamento (Listagem) */
+.equipamento-card-thumb {
+    width: 100%;
+    height: 160px;
+    overflow: hidden;
+    border-radius: 8px;
+    margin-bottom: 0.75rem;
+}
+
+.equipamento-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Página de Feedback de Equipamentos (Espelho da Imagem 1) */
+.feedback-view-container {
+    max-width: 540px;
+    margin: 0 auto;
+    padding-bottom: 2rem;
+}
+
+.feedback-form-card {
+    padding: 1.25rem;
+}
+
+.feedback-preview-box {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+    border: 1px solid color-mix(in srgb, var(--zf-accent) 40%, transparent);
+}
+
+.feedback-preview-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.feedback-preview-badge {
+    position: absolute;
+    top: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.85);
+    color: #ffffff;
+    padding: 6px 18px;
+    border-radius: 8px;
+    font-weight: bold;
+    border: 1px solid var(--zf-accent);
+    white-space: nowrap;
+}
+
+/* Seletor de Estrelas */
+.feedback-stars-box {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 0.85rem;
+    border: 1px solid color-mix(in srgb, var(--zf-accent) 35%, transparent);
+}
+
+.feedback-star-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.2);
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.feedback-star-btn:hover {
+    transform: scale(1.15);
+}
+
+.feedback-star-btn.is-active {
+    color: var(--zf-accent, #D4AF37);
+}
+
+/* Lista de Últimos Feedbacks */
+.feedback-history-title {
+    font-size: 1.1rem;
+}
+
+.feedback-history-card {
+    padding: 0.9rem;
+}
+
+.feedback-history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.feedback-history-stars {
+    color: var(--zf-accent, #D4AF37);
+}
+
+.feedback-history-comment {
+    margin: 0.4rem 0;
+    opacity: 0.9;
+}
