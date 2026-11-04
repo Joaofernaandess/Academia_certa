@@ -1,0 +1,41 @@
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+}
+
+.tabs input[type="radio"] {
+  display: none;
+}
+
+.tabs label {
+  padding: 1rem 2rem;
+  cursor: pointer;
+  color: var(--zf-text-main);
+  font-weight: 600;
+  margin-bottom: -1px;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.tabs label:hover {
+  color: var(--zf-text-light);
+}
+
+.tabs input[type="radio"]:checked+label {
+  color: var(--zf-accent);
+  border-bottom: 2px solid var(--zf-accent);
+}
+
+.tab-content {
+  width: 100%;
+  order: 1;
+  display: none;
+  padding: 1.5rem 0;
+}
+
+/*liga o radio button ao conteudo*/
+.tabs input[type="radio"]:checked+label+.tab-content {
+  display: block;
+}

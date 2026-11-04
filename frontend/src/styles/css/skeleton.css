@@ -1,0 +1,140 @@
+.skeleton {
+  background-color: rgba(255, 255, 255, 0.03);
+
+  background-image: linear-gradient(90deg,
+      rgba(255, 255, 255, 0) 0%,
+      color-mix(in srgb, var(--zf-accent) 15%, transparent) 50%,
+      /*a onda dourada no centro */
+      rgba(255, 255, 255, 0) 100%);
+
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite linear;
+  border-radius: 4px;
+}
+
+/*animacao que faz a onda mover da esquerda para a direita */
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+}
+
+.skeleton-title {
+  height: 1.5rem;
+  width: 60%;
+  margin-bottom: 1rem;
+}
+
+.skeleton-text {
+  height: 1rem;
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+.skeleton-text.short {
+  width: 80%;
+}
+
+.skeleton-image {
+  width: 100%;
+  height: 150px;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.skeleton-button {
+  height: 2.5rem;
+  width: 100%;
+  border-radius: 9999px;
+  margin-top: 1rem;
+}
+
+.loading-waves {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.loading-waves-list,
+.loading-waves-cards {
+  grid-template-columns: 1fr;
+}
+
+.loading-waves-detail,
+.loading-waves-dashboard {
+  display: block;
+  margin-bottom: 0;
+}
+
+.loading-wave-card {
+  width: 100%;
+  min-height: 7rem;
+  padding: 1.25rem;
+  border-radius: 10px;
+  background-color: var(--zf-background-secondary);
+}
+
+.loading-waves-cards .loading-wave-card {
+  min-height: 150px;
+}
+
+.loading-waves.space-items-list .loading-wave-card {
+  min-height: 118px;
+}
+
+.loading-waves.inventory-grid .loading-wave-card {
+  min-height: 150px;
+}
+
+.loading-waves.validation-loading-grid .loading-wave-card {
+  min-height: 180px;
+}
+
+.loading-waves-detail .loading-wave-card {
+  min-height: 220px;
+}
+
+.loading-waves-dashboard .loading-wave-card {
+  min-height: 180px;
+}
+
+.loading-wave-card .skeleton {
+  display: block;
+}
+
+@media (min-width: 600px) {
+  .loading-waves-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .loading-waves-cards {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1200px) {
+  .loading-waves-cards {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+}
+
+@media (min-width: 900px) {
+  .loading-waves-cards.history-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

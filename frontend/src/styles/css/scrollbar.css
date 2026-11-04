@@ -1,0 +1,81 @@
+html {
+  scrollbar-color: var(--zf-scrollbar-thumb) var(--zf-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+body,
+.card,
+.modal-card,
+.modal-card-body,
+.auth-card,
+.profile-card,
+.message-card,
+.app-main,
+.sidebar,
+.table-container,
+.zf-combobox-list {
+  scrollbar-color: var(--zf-scrollbar-thumb) var(--zf-scrollbar-track);
+  scrollbar-width: thin;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.card::-webkit-scrollbar,
+.modal-card::-webkit-scrollbar,
+.modal-card-body::-webkit-scrollbar,
+.auth-card::-webkit-scrollbar,
+.profile-card::-webkit-scrollbar,
+.message-card::-webkit-scrollbar,
+.app-main::-webkit-scrollbar,
+.sidebar::-webkit-scrollbar,
+.table-container::-webkit-scrollbar,
+.zf-combobox-list::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.card::-webkit-scrollbar-track,
+.modal-card::-webkit-scrollbar-track,
+.modal-card-body::-webkit-scrollbar-track,
+.auth-card::-webkit-scrollbar-track,
+.profile-card::-webkit-scrollbar-track,
+.message-card::-webkit-scrollbar-track,
+.app-main::-webkit-scrollbar-track,
+.sidebar::-webkit-scrollbar-track,
+.table-container::-webkit-scrollbar-track,
+.zf-combobox-list::-webkit-scrollbar-track {
+  background: var(--zf-scrollbar-track);
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.card::-webkit-scrollbar-thumb,
+.modal-card::-webkit-scrollbar-thumb,
+.modal-card-body::-webkit-scrollbar-thumb,
+.auth-card::-webkit-scrollbar-thumb,
+.profile-card::-webkit-scrollbar-thumb,
+.message-card::-webkit-scrollbar-thumb,
+.app-main::-webkit-scrollbar-thumb,
+.sidebar::-webkit-scrollbar-thumb,
+.table-container::-webkit-scrollbar-thumb,
+.zf-combobox-list::-webkit-scrollbar-thumb {
+  background: var(--zf-scrollbar-thumb);
+  border-radius: 999px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover,
+.card::-webkit-scrollbar-thumb:hover,
+.modal-card::-webkit-scrollbar-thumb:hover,
+.modal-card-body::-webkit-scrollbar-thumb:hover,
+.auth-card::-webkit-scrollbar-thumb:hover,
+.profile-card::-webkit-scrollbar-thumb:hover,
+.message-card::-webkit-scrollbar-thumb:hover,
+.app-main::-webkit-scrollbar-thumb:hover,
+.sidebar::-webkit-scrollbar-thumb:hover,
+.table-container::-webkit-scrollbar-thumb:hover,
+.zf-combobox-list::-webkit-scrollbar-thumb:hover {
+  background: var(--zf-scrollbar-thumb-hover);
+}

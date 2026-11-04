@@ -1,0 +1,56 @@
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  gap: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--zf-scrollbar-thumb) var(--zf-scrollbar-track);
+}
+
+.carousel::-webkit-scrollbar {
+  height: 8px;
+}
+
+.carousel::-webkit-scrollbar-track {
+  background: var(--zf-scrollbar-track);
+  border-radius: 4px;
+}
+
+.carousel::-webkit-scrollbar-thumb {
+  background: var(--zf-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+.carousel-item {
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+}
+
+.carousel-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.carousel-cards .carousel-item {
+  flex: 0 0 calc(100% - 3rem);
+}
+
+@media (min-width: 768px) {
+  .carousel-cards .carousel-item {
+    flex: 0 0 calc(50% - 0.75rem);
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-cards .carousel-item {
+    flex: 0 0 calc(33.333% - 1rem);
+  }
+}

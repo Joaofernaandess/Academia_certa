@@ -1,49 +1,59 @@
 import react from '@vitejs/plugin-react';
-import { defineConfig, loadEnv } from 'vite';
+import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
-export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  const encryptPublicKey = env.encrypt_public_key || process.env.encrypt_public_key || '';
+export default defineConfig({
+  plugins: [
+    react(),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.svg', 'logo-zenite.png'],
+      manifest: {
+        id: '/',
+        name: 'Academia Certa',
+        short_name: 'Academia Certa',
+        description: 'Sistema de gestão de academias',
+        start_url: '/',
+        scope: '/',
+        theme_color: '#D4AF37',
+        background_color: '#1E1E1E',
+        display: 'standalone',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+            purpose: 'any maskable'
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable'
+          }
+        ]
+      }
+    })
+  ],
+  build: {
+    rollupOptions: {
+      onwarn(warning, warn) {
+        const isSignalRInvalidAnnotation =
+          warning.code === 'INVALID_ANNOTATION' &&
+          typeof warning.id === 'string' &&
+          warning.id.includes('@microsoft/signalr');
 
-  return {
-    define: {
-      __ENCRYPT_PUBLIC_KEY__: JSON.stringify(encryptPublicKey)
-    },
-    plugins: [
-      react(),
-      VitePWA({
-        registerType: 'autoUpdate',
-        includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
-        manifest: {
-          id: '/',
-          name: 'Academia Certa',
-          short_name: 'Academia Certa',
-          description: 'Sistema de gestão de academias',
-          start_url: '/',
-          scope: '/',
-          theme_color: '#D4AF37',
-          background_color: '#1E1E1E',
-          display: 'standalone',
-          icons: [
-            {
-              src: 'pwa-192x192.png',
-              sizes: '192x192',
-              type: 'image/png',
-              purpose: 'any maskable'
-            },
-            {
-              src: 'pwa-512x512.png',
-              sizes: '512x512',
-              type: 'image/png',
-              purpose: 'any maskable'
-            }
-          ]
-        }
-      })
-    ],
-    build: {
-      chunkSizeWarningLimit: 1000
+        if (isSignalRInvalidAnnotation) return;
+
+        warn(warning);
+      },
+      output: {
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+      }
     }
-  };
+  },
+  server: {
+  }
 });

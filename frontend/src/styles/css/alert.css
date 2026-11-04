@@ -1,0 +1,25 @@
+.alert {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  background-color: var(--zf-background-secondary);
+  color: var(--zf-text-light);
+  border-left: 4px solid var(--zf-text-main);
+  display: flex;
+  align-items: center;
+}
+
+.alert-success {
+  border-left-color: var(--zf-success);
+  background-color: var(--zf-success-soft);
+}
+
+.alert-error {
+  border-left-color: var(--zf-danger);
+  background-color: var(--zf-danger-soft);
+}
+
+.alert-warning {
+  border-left-color: var(--zf-warning);
+  background-color: var(--zf-warning-soft);
+}

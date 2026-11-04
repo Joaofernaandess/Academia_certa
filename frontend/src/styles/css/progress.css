@@ -1,0 +1,121 @@
+progress {
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+progress::-webkit-progress-bar {
+  background-color: var(--zf-background-secondary);
+}
+
+progress::-webkit-progress-value {
+  background-color: var(--zf-accent);
+}
+
+progress::-moz-progress-bar {
+  background-color: var(--zf-accent);
+}
+
+.message-progress {
+  display: block;
+  overflow: hidden;
+  height: 2px;
+  border-radius: 999px;
+  width: 80%;
+  margin: 0 auto;
+  background-color: rgba(160, 174, 192, 0.35);
+}
+
+.message-progress-bar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left center;
+}
+
+.message-progress-bar-standard {
+  animation: messageProgressDrain 8s linear forwards;
+}
+
+.message-progress-error .message-progress-bar,
+.message-progress-danger .message-progress-bar {
+  background-color: var(--zf-danger);
+}
+
+.message-progress-success .message-progress-bar {
+  background-color: var(--zf-success);
+}
+
+.message-progress-warning .message-progress-bar {
+  background-color: var(--zf-warning);
+}
+
+@keyframes messageProgressDrain {
+  from {
+    transform: scaleX(1);
+  }
+
+  to {
+    transform: scaleX(0);
+  }
+}
+
+.message-progress::-webkit-progress-bar {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+
+.message-progress::-webkit-progress-value {
+  border-radius: 999px;
+}
+
+.message-progress::-moz-progress-bar {
+  border-radius: 999px;
+}
+
+.message-progress-error::-webkit-progress-value,
+.message-progress-danger::-webkit-progress-value {
+  background-color: var(--zf-danger);
+}
+
+.message-progress-error::-moz-progress-bar,
+.message-progress-danger::-moz-progress-bar {
+  background-color: var(--zf-danger);
+}
+
+.message-progress-success::-webkit-progress-value {
+  background-color: var(--zf-success);
+}
+
+.message-progress-success::-moz-progress-bar {
+  background-color: var(--zf-success);
+}
+
+.message-progress-warning::-webkit-progress-value {
+  background-color: var(--zf-warning);
+}
+
+.message-progress-warning::-moz-progress-bar {
+  background-color: var(--zf-warning);
+}
+
+/*spinner(carregando)*/
+.spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 3px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+  border-radius: 50%;
+  border-top-color: var(--zf-accent);
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

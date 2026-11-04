@@ -1,0 +1,76 @@
+/* --- ESTILOS ESPECÍFICOS: ACERTO DE NOTAS --- */
+
+.search-input-icon-wrapper {
+  position: relative;
+}
+
+.search-input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.search-input-with-icon {
+  padding-left: 2.5rem !important;
+}
+
+/* Caixa vazada com a borda verde */
+.acerto-total-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--zf-success);
+  border-radius: 8px;
+  background-color: transparent;
+}
+
+.acerto-total-label {
+  font-size: 0.95rem;
+  color: var(--zf-text-light);
+  font-weight: 500;
+}
+
+.acerto-total-value {
+  font-size: 1.15rem;
+  color: var(--zf-success);
+  font-weight: 800;
+}
+
+/* Modificador da coluna lateral do card */
+.acerto-action-col {
+  width: 90px;
+  min-width: 90px;
+  border-right: 1px solid color-mix(in srgb, var(--zf-success) 40%, transparent);
+  background-color: color-mix(in srgb, var(--zf-success) 8%, transparent);
+}
+
+/* Caixa interna com a barra de progresso */
+.acerto-progress-box {
+  background-color: var(--zf-background-primary);
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  margin-top: 0.85rem;
+  margin-bottom: 0.85rem;
+}
+
+.acerto-progress-bar {
+  height: 6px;
+  margin-bottom: 0.35rem;
+}
+
+/* Organização do rodapé do card */
+.acerto-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.acerto-badge {
+  border: none;
+  font-weight: 800;
+  margin: 0;
+}

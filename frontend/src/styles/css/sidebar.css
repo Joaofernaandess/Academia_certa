@@ -1,0 +1,891 @@
+.sidebar-checkbox {
+  display: none;
+}
+
+html.sidebar-scroll-locked,
+body.sidebar-scroll-locked {
+  overflow: hidden;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  background-color: rgba(2, 13, 42, 0.7);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  z-index: 6000;
+}
+
+/*menu lateral*/
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 280px;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  background-color: var(--zf-background-secondary);
+  z-index: 6100;
+  margin: 0;
+  float: none;
+  border-left: 0;
+  border-radius: 0;
+  min-width: 0;
+  box-sizing: border-box;
+
+  transform: translateX(-105%);
+  visibility: hidden;
+
+  box-shadow: none;
+
+  transition: transform 0.3s ease, box-shadow 0.3s ease, visibility 0.3s ease;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.sidebar-close-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--zf-accent);
+  border-radius: 50%;
+  background-color: transparent;
+  color: var(--zf-accent);
+  font-family: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.sidebar-close-icon:hover,
+.sidebar-close-icon:focus-visible {
+  background-color: var(--zf-accent);
+  color: var(--zf-background-primary);
+  outline: none;
+}
+
+.sidebar-checkbox:checked~.sidebar {
+  transform: translateX(0);
+  visibility: visible;
+
+  box-shadow: 4px 0 24px rgba(2, 13, 42, 0.5);
+}
+
+.sidebar-checkbox:checked~.sidebar-overlay {
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2.75rem;
+}
+
+.sidebar-nav a,
+.sidebar-nav label {
+  color: var(--zf-text-main);
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  border-bottom: 0;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active,
+.sidebar-nav label:hover,
+.sidebar-nav label.active {
+  color: var(--zf-accent);
+}
+
+.app-shell {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.app-header {
+  padding: 1rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--zf-background-primary);
+}
+
+.app-header-left {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.app-header-right {
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.app-brand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  color: var(--zf-accent);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  max-width: 45%;
+  text-align: center;
+}
+
+.sidebar-backdrop-toggle {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+.sidebar-body {
+  padding: 2.75rem 1.5rem 2rem 1.5rem;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--zf-scrollbar-thumb) var(--zf-scrollbar-track);
+}
+
+.sidebar-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.sidebar-body::-webkit-scrollbar-track {
+  background-color: var(--zf-scrollbar-track);
+}
+
+.sidebar-body::-webkit-scrollbar-thumb {
+  background-color: var(--zf-scrollbar-thumb);
+  border: 2px solid var(--zf-scrollbar-track);
+  border-radius: 999px;
+}
+
+.sidebar-body::-webkit-scrollbar-thumb:hover {
+  background-color: var(--zf-scrollbar-thumb-hover);
+}
+
+.sidebar-title {
+  color: var(--zf-accent);
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-brand-block {
+  padding-top: 0.25rem;
+}
+
+.sidebar-subtitle {
+  margin: 0;
+  color: var(--zf-text-main);
+}
+
+.sidebar-user-block {
+  margin-top: -0.6rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.sidebar-user-name {
+  margin: 0;
+  color: var(--zf-text-light);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.sidebar-user-org {
+  margin: 0.25rem 0 0;
+  color: var(--zf-text-main);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+.sidebar-footer {
+  flex: 0 0 auto;
+  position: relative;
+  padding: 1.5rem;
+  border-top: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+}
+
+.sidebar-version {
+  display: block;
+  margin: 0.85rem 0 0 0;
+  color: var(--zf-text-main);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  text-align: center;
+  opacity: 0.75;
+}
+
+@media (max-height: 720px) {
+  .sidebar-body {
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+
+  .sidebar-nav {
+    gap: 0.55rem;
+    margin-top: 1.5rem;
+  }
+
+  .sidebar-nav a,
+  .sidebar-nav label {
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    font-size: 1rem;
+  }
+
+  .sidebar-title {
+    margin-bottom: 0.25rem;
+  }
+
+  .sidebar-footer {
+    padding: 1rem 1.5rem;
+  }
+
+  .sidebar-user-block {
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .sidebar-body {
+    padding-top: 1.5rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .sidebar-nav {
+    gap: 0.3rem;
+    margin-top: 1rem;
+  }
+
+  .sidebar-footer {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .sidebar-footer .mb-1 {
+    margin-bottom: 0.55rem !important;
+  }
+}
+
+/* =====================================================
+   SUBMENUS DO SIDEBAR (Acordeão)
+   ===================================================== */
+.sidebar-nav-group {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: none;
+  color: var(--zf-text-main);
+  font-size: 1.1rem;
+  padding: 0.5rem 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: color 0.3s ease;
+}
+
+.sidebar-nav-group:hover, 
+.sidebar-nav-group.active {
+  color: var(--zf-accent);
+}
+
+.sidebar-nav-icon {
+  transition: transform 0.3s ease;
+}
+
+/* MUDE AQUI: de 180deg para 90deg */
+.sidebar-nav-group.active .sidebar-nav-icon {
+  transform: rotate(90deg); 
+}
+
+.sidebar-subnav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.25rem;
+  margin-top: -0.25rem;
+  margin-bottom: 0.5rem;
+  border-left: 2px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  margin-left: 0.5rem;
+}
+
+.sidebar-subnav a {
+  font-size: 1rem !important;
+  padding: 0.25rem 0 !important;
+}
+
+/* =====================================================
+   RIGHT SIDEBAR (Histórico Global)
+   ===================================================== */
+/* Container fixo na extremidade direita do monitor */
+.vs-right-sidebar {
+  position: fixed;
+  top: 80px; 
+  right: 0; 
+  bottom: 0;
+  width: 0; 
+  z-index: 900;
+}
+
+/* Container para empilhar as palavras verticalmente */
+.vs-tabs-container {
+  position: absolute;
+  top: 1.5rem;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+/* Aba Fixa com o texto virado */
+.vs-tab-button {
+  pointer-events: auto; 
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  background: var(--zf-background-secondary);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+  border-right: none;
+  border-radius: 0 0 8px 8px;
+  color: var(--zf-text-main);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 1rem 0.35rem; 
+  transition: color 0.2s ease, background-color 0.2s ease;
+  white-space: nowrap;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.vs-tab-button:hover {
+  color: var(--zf-text-light);
+  background-color: color-mix(in srgb, var(--zf-accent) 15%, var(--zf-background-secondary));
+}
+
+.vs-tab-button.is-active {
+  color: var(--zf-background-primary);
+  background-color: var(--zf-accent);
+}
+
+/* Container que anima o card (deslizando) */
+.vs-right-panel-wrapper {
+  position: absolute;
+  top: 1.5rem;
+  bottom: 5.5rem;
+  right: 40px; 
+  width: 320px;
+  transform: translateX(110%);
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.4s;
+  pointer-events: none; 
+}
+
+.vs-right-panel-wrapper.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  pointer-events: auto; 
+}
+
+/* O Card de Histórico Interno */
+.vs-right-panel-card {
+  width: 100%;
+  height: 100%; 
+  min-height: 400px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--zf-background-secondary);
+  box-shadow: -10px 0 24px rgba(2, 13, 42, 0.5) !important;
+}
+
+/* Header do Painel */
+.vs-panel-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 18%, transparent);
+}
+
+.vs-panel-header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.vs-panel-close {
+  color: var(--zf-text-main);
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.vs-panel-close:hover {
+  color: var(--zf-danger);
+}
+
+/* Corpo do Painel */
+.vs-panel-body {
+  flex: 1;
+  display: block;
+  padding: 1.5rem;
+  overflow-y: auto;
+}
+
+/* Estilos Específicos da Linha do Tempo (Histórico) */
+.vs-history-empty-icon {
+  opacity: 0.3;
+}
+
+.vs-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.vs-history-item {
+  border-left: 3px solid var(--zf-accent);
+  padding-left: 1rem;
+}
+
+.vs-history-time {
+  color: var(--zf-text-main);
+  font-size: 0.8rem;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.vs-history-user {
+  margin: 0 0 0.3rem 0;
+  color: var(--zf-text-light);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.vs-history-desc {
+  margin: 0;
+  color: var(--zf-text-main);
+  font-size: 0.9rem;
+  line-height: 1.35;
+}
+
+/* =====================================================
+   HERANÇA LAYOUT PEDIDO CERTO (Estilo AdminLTE + Responsivo Zoom)
+   Mantém classes base intactas para outros sistemas do Framework
+   ===================================================== */
+
+/* 1. Alinhamento horizontal do título ("Zênite Tecnologia" / "Histórico") na mesma linha do botão X */
+.sidebar.sidebar-pc .sidebar-body {
+  padding-top: 1rem;
+}
+
+.sidebar.sidebar-pc .sidebar-brand-block {
+  padding-top: 0;
+  padding-right: 3rem;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar.sidebar-pc .sidebar-title {
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sidebar.sidebar-pc .sidebar-nav {
+  margin-top: 1.5rem;
+}
+
+/* 2. Painel de Histórico com o mesmo design e comportamento do Sidebar */
+.sidebar.sidebar-pc.historico-sidebar-pc {
+  left: auto;
+  right: 0;
+  transform: translateX(105%);
+  visibility: hidden;
+}
+
+.sidebar.sidebar-pc.historico-sidebar-pc.is-open {
+  transform: translateX(0);
+  visibility: visible;
+  box-shadow: -4px 0 24px rgba(2, 13, 42, 0.5);
+}
+
+.historico-sidebar-content-pc {
+  margin-top: 1.5rem;
+}
+
+.vs-tab-button.vs-right-tab-button-pc {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 0;
+}
+
+.vs-right-tab-icon-pc {
+  transform: rotate(90deg);
+  flex-shrink: 0;
+}
+
+.vs-right-sidebar-pc.is-open {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sidebar-overlay.historico-overlay-pc.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* 3. Oculta títulos e instruções duplicadas no corpo da página (Mobile e Desktop) */
+.app-shell-pc .app-main-pc .detail-heading,
+.app-shell-pc .app-main-pc .inventory-list-header,
+.app-shell-pc .app-main-pc .order-table-header,
+.app-shell-pc .app-main-pc .install-title {
+  display: none !important;
+}
+
+.vs-left-sidebar-pc {
+  display: none;
+}
+
+/* 4. Comportamento Mobile: "Pedido Certo AI" no centro e Título da página menor logo abaixo */
+@media (max-width: 599px) {
+  .app-header.app-header-pc {
+    min-height: 4.35rem;
+    padding: 0.5rem 0.85rem;
+  }
+
+  .app-header-pc .app-brand.app-brand-pc {
+    position: absolute;
+    left: 50%;
+    top: 34%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    color: var(--zf-accent);
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 7.5rem);
+    text-align: center;
+  }
+
+  .app-header-pc .app-header-page-title-pc {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 68%;
+    transform: translate(-50%, -50%);
+    margin: 0 !important;
+    color: var(--zf-text-h);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: calc(100% - 7.5rem);
+    text-align: center;
+    pointer-events: none;
+  }
+
+  .app-shell-pc .app-main.app-main-pc {
+    padding-top: 0.75rem;
+  }
+
+  .vs-right-sidebar.vs-right-sidebar-pc {
+    top: 4.35rem;
+  }
+}
+
+/* 5. Comportamento Desktop: AdminLTE fixo + card SEMPRE centralizado com o botão do Footer */
+@media (min-width: 600px) {
+  .app-shell.app-shell-pc {
+    --zf-pc-header-height: 4.5rem;
+    --zf-pc-footer-height: 4.75rem;
+    --zf-pc-sidebar-width: clamp(220px, 22vw, 280px);
+    --zf-pc-historico-width: clamp(220px, 22vw, 280px);
+  }
+
+  .app-header.app-header-pc {
+    height: var(--zf-pc-header-height);
+    min-height: var(--zf-pc-header-height);
+    padding: 0 1.5rem;
+    z-index: 6200;
+  }
+
+  .app-header-pc .header-menu-button-pc {
+    display: none !important;
+  }
+
+  .app-header-pc .app-header-left-pc {
+    display: flex;
+    align-items: center;
+  }
+
+  .app-header-pc .app-brand.app-brand-pc {
+    position: static;
+    left: auto;
+    top: auto;
+    transform: none;
+    margin: 0;
+    max-width: none;
+    text-align: left;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--zf-accent);
+  }
+
+  .app-header-pc .app-header-page-title-pc {
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0 !important;
+    color: var(--zf-text-h);
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50%;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  /* Aba lateral esquerda ("Menu") e direita ("Histórico") */
+  .vs-right-sidebar.vs-left-sidebar-pc {
+    display: block;
+    top: var(--zf-pc-header-height);
+    left: 0;
+    right: auto;
+    bottom: 0;
+    width: 0;
+    z-index: 900;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .vs-right-sidebar.vs-right-sidebar-pc {
+    top: var(--zf-pc-header-height);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .vs-tabs-container.vs-left-tabs-container-pc {
+    left: 0;
+    right: auto;
+    top: 1.5rem;
+    align-items: flex-start;
+  }
+
+  .vs-tab-button.vs-left-tab-button-pc {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    writing-mode: vertical-rl;
+    transform: none;
+    border: 1px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+    border-left: none;
+    border-radius: 0 8px 8px 0;
+    padding: 0.9rem 0.35rem;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+    margin: 0;
+  }
+
+  .vs-left-tab-icon-pc {
+    transform: rotate(90deg);
+    flex-shrink: 0;
+  }
+
+  .sidebar-checkbox:checked ~ .vs-left-sidebar-pc {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  /* Desativa overlays bloqueantes no Desktop para permitir uso livre com menus abertos */
+  .sidebar-overlay.sidebar-overlay-pc,
+  .sidebar-checkbox:checked ~ .sidebar-overlay.sidebar-overlay-pc,
+  .sidebar-overlay.historico-overlay-pc,
+  .sidebar-overlay.historico-overlay-pc.is-open {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  /* Sidebar Esquerdo e Histórico Direito fixos entre Header e Footer */
+  .sidebar.sidebar-pc {
+    top: var(--zf-pc-header-height);
+    bottom: 0;
+    width: var(--zf-pc-sidebar-width);
+    height: calc(100dvh - var(--zf-pc-header-height));
+    min-height: 0;
+    max-height: calc(100dvh - var(--zf-pc-header-height));
+    border-right: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+    z-index: 4900;
+  }
+
+  .sidebar.sidebar-pc.historico-sidebar-pc {
+    width: var(--zf-pc-historico-width);
+    border-right: 0;
+    border-left: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  }
+
+  .app-shell-pc:has(.detail-action-bar) .sidebar.sidebar-pc {
+    bottom: var(--zf-pc-footer-height);
+    height: calc(100dvh - var(--zf-pc-header-height) - var(--zf-pc-footer-height));
+    max-height: calc(100dvh - var(--zf-pc-header-height) - var(--zf-pc-footer-height));
+  }
+
+  /* Mantém o card e as listas de cadastro SEMPRE centralizados com o botão do Footer,
+     aplicando compressão simétrica nos dois lados quando Sidebar ou Histórico estão abertos */
+  .app-shell-pc .container.app-main.app-main-pc {
+    width: auto;
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0.85rem 3rem;
+    transition: margin-left 0.3s ease, margin-right 0.3s ease, padding 0.3s ease;
+  }
+
+  .app-shell-pc:has(.detail-action-bar) .container.app-main.app-main-pc {
+    padding-bottom: calc(var(--zf-pc-footer-height) + 0.75rem);
+  }
+
+  .app-shell-pc:has(.sidebar-checkbox:checked) .container.app-main.app-main-pc,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .container.app-main.app-main-pc {
+    margin-left: var(--zf-pc-sidebar-width);
+    margin-right: var(--zf-pc-sidebar-width);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Faz os containers de todas as páginas respeitarem o espaço disponível centralizado */
+  .app-shell-pc .app-main-pc > * {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 0;
+  }
+
+  .app-shell-pc .app-main-pc .inventory-list-fixed {
+    --zf-inventory-content-width: 100%;
+    width: 100%;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-shell-pc .app-main-pc .detail-view,
+  .app-shell-pc .app-main-pc .detail-form-view {
+    height: 100%;
+    min-height: 0;
+    padding-bottom: 0;
+  }
+
+  .app-shell-pc .app-main-pc .detail-form-layout {
+    flex: 1 1 auto;
+    height: 100%;
+    min-height: 0;
+    width: min(100%, 760px) !important;
+    max-width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-shell-pc .app-main-pc .space-create-form-view:not(.add-pedido-has-file) .detail-form-layout,
+  .app-shell-pc .app-main-pc .space-create-form-view:not(.add-pedido-has-file) .detail-form-scroll-card,
+  .app-shell-pc .app-main-pc .profile-form-view .detail-form-layout,
+  .app-shell-pc .app-main-pc .profile-form-view .detail-form-scroll-card {
+    width: min(100%, 520px) !important;
+    max-width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-shell-pc .app-main-pc .space-create-form-view.add-pedido-has-file .detail-form-layout,
+  .app-shell-pc .app-main-pc .space-create-form-view.add-pedido-has-file .detail-form-scroll-card {
+    width: min(100%, 960px) !important;
+    max-width: 100% !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-shell-pc .app-main-pc .detail-form-scroll-card {
+    flex: 1 1 auto;
+    height: 100%;
+    max-height: 100%;
+    margin-bottom: 0;
+    width: 100% !important;
+  }
+
+  .app-shell-pc .app-main-pc .detail-form-scroll-card .detail-card-body {
+    flex: 1 1 auto;
+    height: 100%;
+    max-height: 100%;
+  }
+
+  .app-shell-pc .app-main-pc .add-pedido-card-custom .detail-form-fields > .column-6 {
+    width: min(100%, 16rem);
+  }
+
+  .app-shell-pc .app-main-pc .inventory-list-scroll,
+  .app-shell-pc .app-main-pc .order-table-scroll {
+    padding-bottom: 0.75rem;
+  }
+}

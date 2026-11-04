@@ -3,7 +3,9 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { registerSW } from 'virtual:pwa-register';
 import App from './App.jsx';
-import './style/academia.css';
+
+import './styles/css/zenite-ui.css';
+import './styles/js/zenite-ui.js';
 
 registerSW({
   onNeedRefresh() {
@@ -19,5 +21,5 @@ createRoot(document.getElementById('root')).render(
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </StrictMode>,
-)
+  </StrictMode>
+);

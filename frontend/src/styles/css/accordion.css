@@ -1,0 +1,77 @@
+details {
+  background-color: var(--zf-background-secondary);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  padding: 0 1.5rem;
+  transition: border-color 0.3s ease;
+  overflow: hidden;
+  interpolate-size: allow-keywords;
+}
+
+details:hover {
+  border-color: color-mix(in srgb, var(--zf-accent) 50%, transparent);
+}
+
+summary {
+  font-weight: 600;
+  color: var(--zf-text-light);
+  cursor: pointer;
+  padding: 1.5rem 0;
+  outline: none;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/*seta dourada */
+summary::after {
+  content: "▼";
+  color: var(--zf-accent);
+  font-size: 0.8em;
+  transition: transform 0.3s ease;
+}
+
+/*roda a seta quando o detalhe está aberto */
+details[open] summary::after {
+  transform: rotate(180deg);
+}
+
+details[open] summary {
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  margin-bottom: 1rem;
+}
+
+details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.28s ease,
+    content-visibility 0.28s ease allow-discrete;
+}
+
+details[open]::details-content {
+  block-size: auto;
+}
+
+details p {
+  padding-bottom: 0.5rem;
+}
+
+/*anima a revelação suave do texto*/
+details[open] summary~* {
+  animation: revelarTexto 0.3s ease-in-out forwards;
+}
+
+@keyframes revelarTexto {
+  0% {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,50 @@
+.pagination {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 1.5rem 0 3rem 0;
+  align-items: center;
+}
+
+.pagination li a,
+.pagination li span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
+  border-radius: 8px;
+  background-color: var(--zf-background-secondary);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  color: var(--zf-text-main);
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+/*efeito ao passar o mouse (Hover)*/
+.pagination li a:hover {
+  border-color: var(--zf-accent);
+  color: var(--zf-text-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--zf-accent) 15%, transparent);
+}
+
+/*pagina atual (Active)*/
+.pagination li.active span {
+  background-color: var(--zf-accent);
+  border-color: var(--zf-accent);
+  color: var(--zf-background-primary);
+}
+
+/*botao desativado (Disabled)*/
+.pagination li.disabled span {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: transparent;
+  border-color: color-mix(in srgb, var(--zf-accent) 10%, transparent);
+  color: var(--zf-text-main);
+}

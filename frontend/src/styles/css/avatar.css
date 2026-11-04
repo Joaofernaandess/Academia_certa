@@ -1,0 +1,25 @@
+.avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--zf-background-secondary);
+  color: var(--zf-text-light);
+  font-weight: bold;
+  object-fit: cover;
+  border: 2px solid var(--zf-accent);
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+  font-size: 0.8rem;
+}
+
+.avatar-lg {
+  width: 64px;
+  height: 64px;
+  font-size: 1.5rem;
+}

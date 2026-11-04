@@ -1,0 +1,161 @@
+:root {
+  /*cores da logo*/
+  --zf-background-primary: #020D2A;
+  --zf-background-secondary: #0A1F44;
+  --zf-accent: #D4AF37;
+  --zf-accent-text: #000;
+  --zf-success: #28A745;
+  --zf-success-soft: rgba(40, 167, 69, 0.1);
+  --zf-danger: #DC3545;
+  --zf-danger-soft: rgba(220, 53, 69, 0.16);
+  --zf-danger-label: #E99292;
+  --zf-warning: #FFC107;
+  --zf-warning-soft: rgba(255, 193, 7, 0.1);
+  --zf-text-main: #A0AEC0;
+  --zf-text-light: #FFFFFF;
+  --zf-text-h: var(--zf-text-light);
+  
+  /* Scrollbar - Agora vinculada à cor de destaque (Theme Accent) */
+  --zf-scrollbar-track: var(--zf-background-primary);
+  --zf-scrollbar-thumb: var(--zf-accent);
+  --zf-scrollbar-thumb-hover: color-mix(in srgb, var(--zf-accent) 85%, transparent);
+  
+  --drop-active-border: #D5A12E;
+  --drop-active-bg: rgba(213, 161, 46, 0.05);
+  --drop-active-text: #FBBF24;
+
+  /*fonte*/
+  --zf-font-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  /*layout*/
+  --zf-container-width: 1200px;
+  --zf-column-gap: 1.5rem;
+  --zf-fixed-footer-scroll-padding: calc(3.25rem + env(safe-area-inset-bottom));
+}
+
+body {
+  background-color: var(--zf-background-primary);
+  color: var(--zf-text-main);
+  font-family: var(--zf-font-base);
+  line-height: 1.6;
+  font-size: 1.15rem;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  overflow: hidden;
+}
+
+/*tema claro*/
+[data-theme="light"] {
+  --zf-background-primary: #CAC7C7;
+  --zf-background-secondary: #E3E3E3;
+  --zf-accent: #0A1F44;
+  --zf-accent-text: #fff;
+  --zf-text-main: #52525B;
+  --zf-text-light: #18181B;
+  --zf-text-h: var(--zf-text-light);
+  
+  /* Scrollbar Light - Agora vinculada à cor de destaque (Theme Accent) */
+  --zf-scrollbar-track: #E3E3E3;
+  --zf-scrollbar-thumb: var(--zf-accent);
+  --zf-scrollbar-thumb-hover: color-mix(in srgb, var(--zf-accent) 85%, transparent);
+  
+  --drop-active-border: #0F172A;
+  --drop-active-bg: rgba(15, 23, 42, 0.05);
+  --drop-active-text: #0F172A;
+}
+
+[data-theme="light"] .button:not(.button-outline),
+[data-theme="light"] .button.button-outline:hover,
+[data-theme="light"] .pagination li.active span,
+[data-theme="light"] mark,
+[data-theme="light"] input[type="file"]::file-selector-button {
+  color: #FFFFFF !important;
+}
+
+[data-theme="light"] .switch input:checked+.slider:before {
+  background-color: #FAFAFA !important;
+}
+
+[data-theme="light"] .card,
+[data-theme="light"] pre,
+[data-theme="light"] input,
+[data-theme="light"] textarea,
+[data-theme="light"] select,
+[data-theme="light"] details,
+[data-theme="light"] .table-container,
+[data-theme="light"] .sidebar,
+[data-theme="light"] .zf-combobox-list {
+  border-color: #0A1F44 !important;
+}
+
+[data-theme="light"] hr,
+[data-theme="light"] nav,
+[data-theme="light"] .tabs,
+[data-theme="light"] th,
+[data-theme="light"] td,
+[data-theme="light"] .sidebar-nav a,
+[data-theme="light"] .sidebar-nav label,
+[data-theme="light"] .sidebar-footer,
+[data-theme="light"] details[open] summary {
+  border-color: rgba(10, 31, 68, 0.3) !important;
+}
+
+/*skeleton*/
+[data-theme="light"] .skeleton {
+  background-color: rgba(10, 31, 68, 0.13) !important;
+  background-image: linear-gradient(90deg,
+      rgba(10, 31, 68, 0.06) 0%,
+      rgba(10, 31, 68, 0.28) 50%,
+      rgba(10, 31, 68, 0.06) 100%) !important;
+}
+
+[data-theme="light"] .card:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05) !important;
+  border-color: var(--zf-accent) !important;
+}
+
+[data-theme="light"] .history-entry {
+  border-left-color: var(--zf-success) !important;
+}
+
+[data-theme="light"] .history-exit {
+  border-left-color: var(--zf-danger) !important;
+}
+
+[data-theme="light"] .history-transfer {
+  border-left-color: var(--zf-accent) !important;
+}
+
+[data-theme="light"] .zf-combobox-list {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] dialog {
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1) !important;
+}
+
+[data-theme="light"] dialog::backdrop,
+[data-theme="light"] .sidebar-overlay {
+  background-color: rgba(24, 24, 27, 0.5) !important;
+}
+
+/*componentes flutuantes ficarem solidos*/
+[data-theme="light"] .zf-combobox-list,
+[data-theme="light"] dialog,
+[data-theme="light"] .sidebar {
+  background-color: #E3E3E3 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  border: 1px solid rgba(10, 31, 68, 0.1) !important;
+  box-shadow: 0 12px 35px rgba(10, 31, 68, 0.15) !important;
+}
+
+[data-theme="light"] dialog::backdrop,
+[data-theme="light"] .sidebar-overlay {
+  background-color: rgba(10, 31, 68, 0.5) !important;
+  backdrop-filter: blur(3px) !important;
+}

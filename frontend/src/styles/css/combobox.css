@@ -1,0 +1,515 @@
+.zf-combobox {
+  position: relative;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  z-index: auto;
+}
+
+.zf-combobox.active {
+  z-index: 3000;
+}
+
+.zf-combobox.combobox-field {
+  margin-bottom: 0;
+}
+
+.header-route-combobox {
+  width: auto;
+  min-width: 7rem;
+  max-width: 9rem;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.header-route-combobox .header-route-trigger {
+  min-width: 0;
+  gap: 0.6rem;
+}
+
+.header-route-combobox .zf-combobox-list {
+  max-height: none;
+  overflow: visible;
+}
+
+.header-route-option-number {
+  display: none;
+}
+
+.header-route-combobox::after {
+  display: none;
+}
+
+@media (max-width: 599px) {
+  .header-route-combobox {
+    min-width: 0;
+    max-width: none;
+  }
+
+  .header-route-combobox .header-route-trigger {
+    width: auto;
+    min-width: 0;
+  }
+
+  .header-route-combobox .zf-combobox-list {
+    width: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.25rem 0;
+  }
+
+  .header-route-combobox .zf-combobox-item {
+    justify-content: center;
+    padding: 0.6rem 0;
+    text-align: center;
+  }
+
+  .header-route-combobox .zf-cb-left {
+    align-items: center;
+    text-align: center;
+  }
+
+  .header-route-option-name {
+    display: none;
+  }
+
+  .header-route-option-number {
+    display: inline;
+  }
+
+  .header-route-combobox.active .header-route-trigger svg {
+    transform: rotate(180deg);
+  }
+}
+
+.zf-combobox-multi {
+  min-height: 42px;
+  height: auto;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+  padding: 0.25rem 2.5rem 0.25rem 0.5rem;
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+  border-radius: 8px;
+  background-color: var(--zf-background-secondary);
+}
+
+.zf-combobox-multi .zf-combobox-input {
+  flex: 1 1 120px;
+  min-width: 120px;
+  width: auto;
+  padding: 0.35rem 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.zf-combobox-multi .zf-combobox-input:focus {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.zf-combobox-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--zf-accent) 16%, var(--zf-background-secondary));
+  color: var(--zf-text-light);
+  font-size: 0.85rem;
+  line-height: 1.3;
+}
+
+.zf-combobox-tag-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.zf-combobox-input {
+  width: 100%;
+  padding: 0.75rem 3.5rem 0.75rem 2.4rem !important;
+  margin-bottom: 0 !important;
+  background-color: var(--zf-background-secondary);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+  color: var(--zf-text-light);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  cursor: text;
+}
+
+.zf-combobox-input.combobox-input {
+  padding-right: 30px;
+}
+
+.zf-combobox-input.has-clear-button {
+  padding-right: 60px;
+}
+
+.zf-combobox-input:focus {
+  border-color: var(--zf-accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zf-accent) 15%, transparent);
+}
+
+/* --- LUPA GLOBAL DOS COMBOBOXES DE PESQUISA --- */
+.zf-combobox::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 53%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  background-color: var(--zf-text-main);
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 2;
+  /* Desenha o ícone usando máscara para aplicar a cor do background dinamicamente */
+  -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3C/svg%3E");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Esconde a lupa se o combobox for o seletor pequeno de rotas do cabeçalho */
+.header-route-combobox::before {
+  display: none;
+}
+
+.zf-select-combobox::before {
+  display: none;
+}
+
+.zf-combobox-multi.has-tags::before {
+  display: none;
+}
+
+.cor-combobox::before {
+  display: none;
+}
+
+.cor-combobox .zf-combobox-input {
+  padding-left: 0.75rem !important;
+}
+
+.zf-select-combobox .zf-combobox-input {
+  padding-left: 0.75rem !important;
+  cursor: pointer;
+}
+
+.zf-combobox-trigger-input {
+  background-color: var(--zf-background-secondary) !important;
+  border-color: color-mix(in srgb, var(--zf-accent) 30%, transparent) !important;
+  color: var(--zf-text-light) !important;
+  box-shadow: none !important;
+  padding-right: 2.5rem !important;
+  cursor: pointer;
+}
+
+.zf-combobox-trigger-input:focus {
+  border-color: var(--zf-accent) !important;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zf-accent) 15%, transparent) !important;
+}
+
+/*seta dourada*/
+.zf-combobox::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 1.25rem;
+  transform: translateY(-50%);
+  color: var(--zf-accent);
+  font-size: 0.8em;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.zf-combobox-custom-arrow::after {
+  right: 12px !important;
+}
+
+.zf-combobox.active::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.combobox-clear-button {
+  position: absolute;
+  right: 32px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: var(--zf-text-main);
+  opacity: 0.6;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.combobox-clear-button:hover {
+  opacity: 1;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 2.5rem;
+  height: 100%;
+  background: transparent;
+  border: none;
+  color: var(--zf-accent);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+}
+
+.password-toggle svg {
+  display: block;
+  flex: 0 0 auto;
+}
+
+/*lista suspensa*/
+.zf-combobox-list {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  background-color: var(--zf-background-secondary);
+  border: 1px solid var(--zf-accent);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(2, 13, 42, 0.9);
+  z-index: 3001;
+  list-style: none;
+  padding: 0.5rem 0;
+  margin: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.zf-combobox.active .zf-combobox-list {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.zf-combobox-list-floating {
+  position: absolute;
+  top: auto;
+  left: auto;
+  width: auto;
+  z-index: 99999;
+}
+
+.zf-combobox-list-portal {
+  position: fixed;
+  top: var(--zf-combobox-portal-top);
+  bottom: var(--zf-combobox-portal-bottom, auto);
+  left: var(--zf-combobox-portal-left);
+  width: var(--zf-combobox-portal-width);
+  max-height: var(--zf-combobox-portal-max-height, 250px);
+  z-index: 99999;
+}
+
+.zf-combobox-list-contained {
+  top: calc(100% + 0.35rem);
+  left: 0;
+  right: 0;
+  width: 100%;
+  max-height: min(250px, 45vh);
+  z-index: 100000;
+}
+
+.zf-combobox-list.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.zf-combobox-input-clear-space {
+  padding-right: 2rem;
+}
+
+/*estrutura item*/
+.zf-combobox-item {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 12%, transparent);
+}
+
+.zf-combobox-item:last-child {
+  border-bottom: none;
+}
+
+.zf-combobox-item-compact {
+  padding: 0.5rem 1rem;
+}
+
+.zf-combobox-empty {
+  padding: 0.85rem 1.5rem;
+  color: var(--zf-text-main);
+  font-size: 0.95rem;
+  text-align: center;
+  cursor: default;
+  user-select: none;
+}
+
+/*nome e cpf na esquerda*/
+.zf-cb-left {
+  display: flex;
+  flex-direction: column;
+}
+
+/*fonte do nome*/
+.zf-cb-name {
+  font-weight: 700;
+  color: var(--zf-text-light);
+  font-size: 1.05rem;
+  transition: color 0.2s ease;
+}
+
+.zf-cb-name-sm {
+  font-size: 0.9rem;
+}
+
+/*fonte do cpf*/
+.zf-cb-cpf {
+  font-family: Consolas, Monaco, 'Andale Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--zf-text-main);
+  opacity: 0.8;
+  margin-top: 0.2rem;
+}
+
+.zf-cb-cpf-sm {
+  font-size: 0.75rem;
+  margin-top: 2px;
+}
+
+.zf-cb-info {
+  font-size: 0.8rem;
+  background-color: color-mix(in srgb, var(--zf-accent) 10%, transparent);
+  color: var(--zf-accent);
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  border: 1px solid var(--zf-accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.zf-combobox-item:hover,
+.zf-combobox-item.highlighted {
+  background-color: color-mix(in srgb, var(--zf-accent) 12%, transparent);
+}
+
+.zf-combobox-item:hover .zf-cb-name,
+.zf-combobox-item.highlighted .zf-cb-name {
+  color: var(--zf-accent);
+}
+
+.cor-combobox-list .cor-combobox-name {
+  font-size: 0.82rem;
+  line-height: 1.15;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.zf-combobox-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.zf-combobox-list::-webkit-scrollbar-track {
+  background: var(--zf-scrollbar-track);
+  border-radius: 4px;
+}
+
+.zf-combobox-list::-webkit-scrollbar-thumb {
+  background: var(--zf-scrollbar-thumb);
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   ZF INPUT WITH ACTION
+   ═══════════════════════════════════════════════ */
+
+.zf-input-with-action {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  gap: 0;
+}
+
+.zf-input-with-action:has(.is-invalid) {
+  margin-bottom: 0.25rem;
+}
+
+.zf-input-with-action>.zf-combobox,
+.zf-input-with-action>input,
+.zf-input-with-action>.zf-combobox .zf-combobox-input.is-invalid,
+.zf-input-with-action>input.is-invalid {
+  flex: 1;
+  margin-bottom: 0 !important;
+}
+
+.zf-input-with-action>.zf-combobox .zf-combobox-input,
+.zf-input-with-action>input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  border-right: none !important;
+}
+
+.zf-input-with-action>.zf-combobox::after {
+  display: none;
+}
+
+.zf-input-with-action__button {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  padding: 0;
+  border-radius: 0 8px 8px 0 !important;
+  border-left: none !important;
+  margin: 0 !important;
+  align-self: stretch;
+}
+
+.zf-input-with-action>.zf-combobox.zf-combobox-custom-arrow::after {
+  display: block;
+  right: 0.75rem;
+}

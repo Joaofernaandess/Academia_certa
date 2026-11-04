@@ -1,0 +1,59 @@
+header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--zf-background-primary);
+  padding: 0.5rem 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 10%, transparent);
+  transition: all 0.3s ease;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  margin-bottom: 0;
+  border-bottom: none;
+}
+
+nav a {
+  color: var(--zf-text-main);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  color: var(--zf-accent);
+}
+
+nav .brand {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--zf-text-light);
+  margin-right: auto;
+}
+
+[data-theme="light"] header {
+  background-color: #CAC7C7 !important;
+  border-bottom-color: rgba(10, 31, 68, 0.15) !important;
+}
+
+@media (max-width: 768px) {
+  nav {
+    justify-content: center;
+    gap: 1rem 1.5rem;
+  }
+
+  nav .brand {
+    margin-right: 0;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 0.5rem;
+  }
+}

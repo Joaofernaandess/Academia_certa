@@ -1,0 +1,39 @@
+.badge {
+  display: inline-block;
+  padding: 0.25em 0.85em;
+  font-size: 0.75em;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 9999px; /*efeito pilula*/
+  background-color: transparent;
+  color: var(--zf-text-main);
+  border: 1px solid var(--zf-text-main);
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/*dourado para destacar*/
+.badge.badge-accent {
+  background-color: color-mix(in srgb, var(--zf-accent) 10%, transparent);
+  color: var(--zf-accent);
+  border-color: var(--zf-accent);
+}
+
+.badge.badge-mark {
+  padding: 0.1rem 0.3rem;
+  border: 0;
+  border-radius: 3px;
+  background-color: var(--zf-accent);
+  color: var(--zf-background-primary);
+  font-size: 0.75em;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.2;
+  text-transform: none;
+}
+
+[data-theme="light"] .badge.badge-mark {
+  color: var(--zf-accent-text);
+}

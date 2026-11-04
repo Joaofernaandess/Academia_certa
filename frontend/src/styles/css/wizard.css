@@ -1,0 +1,976 @@
+.app-main:has(.nova-referencia-view) {
+  padding-top: 1rem;
+}
+
+.nova-referencia-heading {
+  margin-bottom: 1rem !important;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: var(--zf-background-primary);
+  padding: 0 0 0.5rem 0;
+  gap: 0.25rem !important;
+}
+
+.wizard-super-card {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto 2rem auto;
+  background-color: var(--zf-background-secondary);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2, 13, 42, 0.5);
+  padding: 1.5rem 2.5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+[data-theme="light"] .wizard-super-card {
+  box-shadow: 0 10px 30px rgba(10, 31, 68, 0.15);
+}
+
+.wizard-header-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  width: 100%;
+  margin: 0 auto 1.25rem auto;
+  flex-wrap: wrap;
+}
+
+.wizard-step {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+
+.wizard-step.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.wizard-step-label {
+  font-size: 1.15rem;
+  color: var(--zf-text-main);
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.wizard-step.active .wizard-step-label,
+.wizard-step.completed .wizard-step-label {
+  color: var(--zf-accent);
+  font-weight: 800;
+}
+
+.wizard-separator {
+  display: flex;
+  align-items: center;
+  color: color-mix(in srgb, var(--zf-text-main) 40%, transparent);
+}
+
+.wizard-divider {
+  opacity: 0.5;
+  margin-bottom: 1.25rem;
+}
+
+.wizard-step-container {
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wizard-step-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+/* =====================================================
+   STEP 1 LAYOUT (Divided Grid e Área Tracejada)
+   ===================================================== */
+.wizard-step1-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+.wizard-step1-column {
+  flex: 0 0 50%;
+  max-width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.wizard-inherited-traits-container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 140px;
+  padding: 1rem 1.5rem;
+  border: 2px dashed color-mix(in srgb, var(--zf-accent) 50%, transparent);
+  border-radius: 12px;
+  background-color: transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.wizard-inherited-traits-container:focus-within {
+  border-color: var(--zf-accent);
+  border-style: solid;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--zf-accent) 15%, transparent);
+}
+
+.wizard-inherited-traits-textarea {
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 60px;
+  resize: none;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  color: var(--zf-text-light);
+  outline: none;
+  font-family: inherit;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.wizard-envelope-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.25rem 1.5rem;
+  border: 2px dashed color-mix(in srgb, var(--zf-accent) 50%, transparent);
+  border-radius: 12px;
+  background-color: transparent;
+}
+
+.wizard-section-title-compact {
+  margin-bottom: 0.75rem;
+}
+
+.wizard-upload-button {
+  min-height: 3.5rem;
+}
+
+.wizard-upload-area {
+  gap: 0.65rem;
+  margin-top: 0 !important;
+}
+
+.wizard-upload-actions {
+  display: grid;
+  gap: 1rem;
+  flex: 0 1 20rem !important;
+  width: min(100%, 20rem);
+  max-width: 20rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.wizard-upload-actions .wizard-upload-button {
+  min-height: 3.35rem;
+  padding: 0.45rem 1rem;
+}
+
+.wizard-upload-actions .wizard-upload-button svg {
+  width: 1.55rem;
+  height: 1.55rem;
+  min-width: 1.55rem;
+}
+
+.wizard-upload-dropzone {
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed color-mix(in srgb, var(--zf-accent) 50%, transparent);
+  border-radius: 12px;
+}
+
+/* =====================================================
+   CORREÇÃO: SKELETON (LOADING) PREENCHENDO O QUADRO
+   ===================================================== */
+.wizard-upload-dropzone:has(.skeleton),
+.wizard-isolated-dropzone:has(.skeleton) {
+  padding: 0.5rem !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.wizard-upload-dropzone .skeleton,
+.wizard-isolated-dropzone .skeleton {
+  flex: 1 1 auto;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 16rem !important;
+  margin: 0 !important;
+  border-radius: 8px !important;
+}
+/* ===================================================== */
+
+.wizard-upload-selected {
+  min-height: 21rem;
+}
+
+.wizard-upload-selected .file-preview {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 16rem;
+}
+
+.wizard-upload-text {
+  font-size: 1.1rem;
+  margin-top: 1rem;
+}
+
+.wizard-prototype-photo-dropzone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 7rem;
+  line-height: 1.2;
+}
+
+.wizard-prototype-photo-dropzone svg {
+  flex: 0 0 auto;
+  color: var(--zf-accent);
+}
+
+.wizard-prototype-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.wizard-prototype-upload-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.wizard-step1-content .wizard-prototype-upload-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+}
+
+.wizard-prototype-upload-grid .wizard-upload-dropzone,
+.wizard-prototype-upload-grid .wizard-upload-selected {
+  min-height: 16rem;
+  margin: 0 !important;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.wizard-prototype-upload-grid .wizard-upload-dropzone {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.wizard-prototype-main {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: .9rem;
+  align-content: start;
+  height: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.wizard-prototype-fields {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+
+.wizard-prototype-code-field {
+  max-width: 20rem;
+}
+
+.wizard-prototype-fields input[readonly] {
+  cursor: default;
+}
+
+.wizard-prototype-side {
+  display: grid;
+  gap: 1.5rem;
+  align-content: start;
+  min-width: 0;
+}
+
+.wizard-prototype-upload-grid .wizard-upload-selected,
+.wizard-prototype-upload-grid .file-preview {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.wizard-prototype-upload-grid .pedido-upload-selected {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.wizard-prototype-upload-grid .file-preview-image {
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.wizard-prototype-upload-actions {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  max-width: none;
+  margin: 0;
+}
+
+.wizard-upload-dropzone-actions {
+  flex: 0 0 auto !important;
+  grid-template-columns: 1fr;
+  width: min(100%, 20rem);
+  margin: 0 auto;
+  gap: 1rem;
+}
+
+.wizard-upload-dropzone-actions .wizard-upload-button {
+  min-height: 3.35rem;
+  padding: 0.45rem 1rem;
+}
+
+.wizard-line-fields {
+  display: grid;
+  gap: 0.9rem;
+  align-content: start;
+}
+
+.wizard-line-grid {
+  display: grid;
+  gap: 0.75rem 1rem;
+  align-items: start;
+}
+
+.wizard-line-grid-one {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.wizard-line-grid-two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wizard-line-grid-three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wizard-line-grid-main {
+  grid-template-columns: minmax(0, 1.6fr) minmax(6.5rem, 0.9fr) minmax(6.5rem, 0.9fr) minmax(5.25rem, 0.55fr);
+}
+
+.wizard-line-grid-main .linha-switch-field .switch {
+  margin-top: 0.15rem;
+}
+
+.wizard-line-fields .order-table-field {
+  margin-bottom: 0;
+}
+
+.nova-referencia-view .detail-action-bar-one {
+  display: flex;
+  justify-content: center;
+}
+
+.nova-referencia-view .detail-action-bar-one .button {
+  width: min(100%, 20rem);
+}
+
+.nova-referencia-view .zf-combobox.active {
+  z-index: 7000;
+}
+
+.nova-referencia-view .zf-combobox.active .zf-combobox-list {
+  z-index: 100000;
+}
+
+.nova-referencia-view .detail-action-bar {
+  z-index: 1000;
+}
+
+.nova-referencia-view .order-table-grid-three>div:nth-child(n + 4) .zf-combobox-list {
+  top: auto;
+  bottom: calc(100% + 0.35rem);
+  transform: translateY(10px);
+}
+
+.nova-referencia-view .wizard-line-fields .wizard-line-grid:not(.wizard-line-grid-main) .zf-combobox-list {
+  top: auto;
+  bottom: calc(100% + 0.35rem);
+  transform: translateY(10px);
+}
+
+.nova-referencia-view .order-table-grid-three>div:nth-child(n + 4) .zf-combobox-list.is-open,
+.nova-referencia-view .order-table-grid-three>div:nth-child(n + 4) .zf-combobox.active .zf-combobox-list,
+.nova-referencia-view .wizard-line-fields .wizard-line-grid:not(.wizard-line-grid-main) .zf-combobox-list.is-open,
+.nova-referencia-view .wizard-line-fields .wizard-line-grid:not(.wizard-line-grid-main) .zf-combobox.active .zf-combobox-list {
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .wizard-step1-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .wizard-super-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .wizard-header-nav {
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .wizard-step-label {
+    font-size: 0.85rem;
+  }
+
+  .wizard-prototype-upload-grid,
+  .wizard-step1-content .wizard-prototype-upload-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .wizard-prototype-code-field {
+    max-width: none;
+  }
+
+  .wizard-line-grid-two,
+  .wizard-line-grid-three,
+  .wizard-line-grid-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =====================================================
+   TABS DO PROTÓTIPO (Passo 3)
+   ===================================================== */
+.wizard-tabs-container {
+  display: flex;
+  flex-direction: row;
+  overflow-x: auto;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 25%, transparent);
+  gap: 6px;
+  padding-left: 8px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.wizard-tabs-container::-webkit-scrollbar {
+  display: none;
+}
+
+.wizard-tab {
+  cursor: pointer;
+  padding: 0.65rem 1.5rem;
+  background-color: transparent;
+  color: var(--zf-text-main);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 25%, transparent);
+  border-bottom: none;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  margin-bottom: -1px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+  font-family: inherit;
+}
+
+.wizard-tab:hover {
+  opacity: 1;
+  color: var(--zf-text-light);
+  background-color: color-mix(in srgb, var(--zf-background-secondary) 50%, transparent);
+}
+
+.wizard-tab.active {
+  background-color: var(--zf-accent);
+  color: var(--zf-accent-text);
+  border-color: var(--zf-accent);
+  font-weight: 700;
+  opacity: 1;
+}
+
+.wizard-tab-content-card {
+  border-top: 2px solid var(--zf-accent) !important;
+  margin-top: 0 !important;
+  border-top-left-radius: 8px;
+}
+
+.wizard-tab-content-card.first-tab-active {
+  border-top-left-radius: 0 !important;
+}
+
+/* =====================================================
+   AJUSTES RESPONSIVOS PARA IMAGENS NO MOBILE (STEP 1 E 3)
+   ===================================================== */
+@media (max-width: 599px) {
+  .wizard-upload-selected,
+  .wizard-prototype-upload-grid .wizard-upload-selected {
+    min-height: 0 !important;
+    height: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .wizard-upload-selected .file-preview {
+    min-height: 12rem !important;
+    max-height: 15rem !important;
+    height: auto !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Impede que a caixa pontilhada estique além do card */
+  .wizard-upload-dropzone,
+  .wizard-isolated-dropzone,
+  .arquivo-upload-area {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Força a quebra de linha em textos longos de erro na área de upload */
+  .wizard-upload-dropzone .empty-state-text,
+  .arquivo-upload-area .empty-state-text,
+  .wizard-isolated-dropzone .empty-state-text {
+    white-space: normal !important;
+    overflow-wrap: break-word !important;
+    word-break: break-word !important;
+    max-width: 100% !important;
+    padding: 0 0.5rem;
+  }
+}
+
+/* =====================================================
+   AJUSTES RESPONSIVOS MOBILE (STEP 2) - ORDEM DAS SEÇÕES
+   ===================================================== */
+@media (max-width: 900px) {
+  .wizard-step1-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Remove o encapsulamento das colunas apenas no celular para podermos reordenar os filhos */
+  .wizard-step1-column {
+    display: contents !important;
+  }
+
+  /* Ordem de empilhamento desejada no mobile */
+  .wizard-step2-estrutura {
+    order: 1 !important;
+    width: 100% !important;
+    margin-bottom: 0 !important;
+  }
+
+  .wizard-step2-cores {
+    order: 2 !important;
+    width: 100% !important;
+  }
+
+  .wizard-step2-envelope {
+    order: 3 !important;
+    width: 100% !important;
+  }
+}
+
+/* =====================================================
+   AJUSTES RESPONSIVOS MOBILE (STEP 1) - ORDEM DOS CAMPOS
+   ===================================================== */
+@media (max-width: 900px) {
+  .wizard-step1-fields > div.order-table-grid,
+  .wizard-step1-fields > div.wizard-line-grid {
+    display: contents !important;
+  }
+
+  .wizard-step1-fields {
+    display: grid !important;
+    grid-template-columns: minmax(5.5rem, 25%) minmax(0, 1fr) !important;
+    gap: 0.85rem 0.5rem !important;
+  }
+
+  .wizard-step1-fields h3 { order: -2; grid-column: 1 / -1; }
+  .wizard-step1-fields p { order: -1; grid-column: 1 / -1; margin-bottom: 0.5rem !important; }
+
+  /* ----------------------------------------------------
+     Classes componentes que fazem a ordem
+     ---------------------------------------------------- */
+  .mob-linha      { order: 1;  grid-column: 1 / -1; }
+  .mob-exclusiva  { order: 2;  grid-column: 1; }
+  .mob-cliente    { order: 3;  grid-column: 2; }
+  .mob-fabricante { order: 4;  grid-column: 1 / -1; }
+  .mob-ninicial   { order: 5;  grid-column: 1 / -1; }
+  .mob-nfinal     { order: 6;  grid-column: 1 / -1; }
+  .mob-cat        { order: 7;  grid-column: 1 / -1; }
+  .mob-gen        { order: 8;  grid-column: 1 / -1; }
+  .mob-proc       { order: 9;  grid-column: 1 / -1; }
+  .mob-rend       { order: 10; grid-column: 1 / -1; }
+  .mob-outras     { order: 11; grid-column: 1 / -1; }
+}
+
+/* =======================================
+   LISTA DE CORES SELECIONADAS (STEP 2) 
+   ======================================= */
+.wizard-color-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 0.75rem;
+}
+
+.wizard-color-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-text-main) 20%, transparent);
+}
+
+.wizard-color-item:last-child {
+  border-bottom: none;
+}
+
+.wizard-color-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  color: var(--zf-danger);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+/* Efeito de crescimento de 25% no Hover*/
+.wizard-color-remove:hover {
+  transform: scale(1.25);
+}
+
+.wizard-color-text {
+  color: var(--zf-text-light);
+  font-size: 0.95rem;
+  font-weight: 500;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* =====================================================
+   ESTRUTURA DE PEÇAS E MATÉRIAS PRIMAS (STEP 3) - NOVO LAYOUT
+   ===================================================== */
+.wizard-pieces-container {
+  margin-top: 1rem;
+}
+
+.wizard-pieces-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.wizard-piece-item {
+  background-color: color-mix(in srgb, var(--zf-background-primary) 50%, transparent);
+  border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.wizard-piece-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.65rem 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.wizard-piece-header:hover {
+  background-color: color-mix(in srgb, var(--zf-accent) 8%, transparent);
+}
+
+.wizard-piece-item.is-open .wizard-piece-header {
+  border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
+}
+
+.wizard-piece-title {
+  font-weight: 700;
+  color: var(--zf-text-light);
+  font-size: 0.95rem;
+}
+
+.wizard-piece-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.wizard-piece-arrow {
+  color: var(--zf-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+/* Anima o giro da seta */
+/* O Segredo: Gira a seta para baixo quando a peça está expandida */
+.wizard-piece-item.is-open .wizard-piece-arrow {
+  transform: rotate(90deg);
+}
+
+.wizard-piece-separator {
+  width: 1px;
+  height: 1.2rem;
+  background-color: color-mix(in srgb, var(--zf-text-main) 30%, transparent);
+}
+
+.wizard-piece-delete {
+  background: transparent;
+  border: none;
+  color: var(--zf-danger);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.wizard-piece-delete:hover {
+  transform: scale(1.25);
+}
+
+.wizard-piece-body {
+  padding: 1rem;
+  background-color: transparent;
+}
+
+.wizard-material-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  margin-top: 0.75rem;
+}
+
+.wizard-material-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.wizard-material-delete {
+  background: transparent;
+  border: none;
+  color: var(--zf-danger);
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.wizard-material-delete:hover {
+  transform: scale(1.25);
+}
+
+.wizard-material-text {
+  color: var(--zf-text-light);
+  font-size: 0.9rem;
+}
+
+.wizard-material-label {
+  font-size: 0.75rem;
+}
+
+@media (min-width: 600px) {
+  .wizard-step3-dropzone .wizard-prototype-upload-grid .wizard-upload-dropzone,
+  .wizard-step3-dropzone .wizard-prototype-upload-grid .wizard-upload-selected {
+    min-height: 460px;
+  }
+
+  .wizard-step3-dropzone .wizard-prototype-upload-grid .wizard-upload-dropzone.pedido-upload-selected .file-preview {
+    height: 100%;
+    min-height: 380px;
+  }
+}
+
+/* =====================================================
+   SMALL-SEARCH: 50% MAIS FINO E LARGURA 100% DO CARD
+   Alinhamento exato entre input e botão de +
+   ===================================================== */
+.zf-input-with-action.small-search {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: 2rem;
+  min-height: 2rem;
+}
+
+.zf-input-with-action.small-search > .zf-combobox {
+  display: flex;
+  align-items: stretch;
+  flex: 1 1 auto;
+  height: 2rem;
+  min-height: 2rem;
+  margin: 0 !important;
+}
+
+.zf-input-with-action.small-search > .zf-combobox::before {
+  left: 0.6rem;
+  width: 0.85rem;
+  height: 0.85rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.zf-input-with-action.small-search > .zf-combobox.zf-combobox-custom-arrow::after {
+  right: 0.5rem !important;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.65em;
+}
+
+.zf-input-with-action.small-search > .zf-combobox.zf-combobox-custom-arrow.active::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.zf-input-with-action.small-search > .zf-combobox .zf-combobox-input,
+.zf-input-with-action.small-search > input {
+  display: block;
+  width: 100%;
+  height: 2rem !important;
+  min-height: 2rem !important;
+  max-height: 2rem !important;
+  margin: 0 !important;
+  padding: 0 1.65rem 0 1.8rem !important;
+  font-size: 0.85rem !important;
+  line-height: calc(2rem - 2px) !important;
+  border-radius: 6px 0 0 6px !important;
+  box-sizing: border-box !important;
+}
+
+.zf-input-with-action.small-search .zf-input-with-action__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  min-width: 2rem;
+  height: 2rem !important;
+  min-height: 2rem !important;
+  max-height: 2rem !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 0 6px 6px 0 !important;
+  box-sizing: border-box !important;
+  align-self: stretch;
+}
+
+.zf-input-with-action.small-search .zf-input-with-action__button svg {
+  width: 0.95rem !important;
+  height: 0.95rem !important;
+}
+
+/* =====================================================
+   HERANÇA CARD PRINCIPAL FULL-HEIGHT E ADEQUAÇÃO AO ZOOM (Pedido Certo)
+   ===================================================== */
+@media (min-width: 600px) {
+  .app-shell-pc .app-main-pc .nova-referencia-view {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    padding-bottom: 0;
+    overflow: hidden;
+  }
+
+  .app-shell-pc .app-main-pc .wizard-super-card {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 1.5rem clamp(1rem, 2.2vw, 2.5rem);
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  .app-shell-pc .app-main-pc .wizard-step1-column {
+    flex: 1 1 0;
+    max-width: calc(50% - 0.75rem);
+    min-width: 0;
+  }
+
+  .app-shell-pc .app-main-pc .wizard-line-grid-main {
+    grid-template-columns: minmax(0, 1.5fr) minmax(5rem, 0.85fr) minmax(5rem, 0.85fr) minmax(4.5rem, auto);
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1460px) {
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-step1-grid,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-step1-grid {
+    flex-direction: column;
+  }
+
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-step1-column,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-step1-column {
+    flex: 1 1 100%;
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-prototype-upload-grid,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-prototype-upload-grid,
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-step1-content .wizard-prototype-upload-grid,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-step1-content .wizard-prototype-upload-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-line-grid-main,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-line-grid-main,
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-line-grid-three,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-line-grid-three,
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .order-table-grid-three,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .order-table-grid-three,
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-consumo-meta-grid,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-consumo-meta-grid,
+  .app-shell-pc:has(.sidebar-checkbox:checked) .app-main-pc .wizard-consumo-fields-grid,
+  .app-shell-pc:has(.historico-sidebar-pc.is-open) .app-main-pc .wizard-consumo-fields-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
