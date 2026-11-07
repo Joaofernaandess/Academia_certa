@@ -1,11 +1,10 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import AprovarUnidadeOrganizacionalView from '../components/AprovarEmpresasView';
-import ValidarUsuariosView from '../components/ValidarUsuariosView';
 import EquipamentosPage from '../pages/equipamentos/EquipamentosPage';
 import NovoEquipamentoPage from '../pages/equipamentos/NovoEquipamentoPage';
 import FeedbackEquipamentoPage from '../pages/feedback/FeedbackEquipamentoPage';
 import HomeHero from '../pages/home/HomeHero';
 import InstallIosPage from '../pages/home/InstallIosPage';
+import ManagementPage from '../pages/home/ManagementPage';
 import ProfilePage from '../pages/home/ProfilePage';
 import TreinosPage from '../pages/treinos/TreinosPage';
 import NovoTreinoPage from '../pages/treinos/NovoTreinoPage';
@@ -14,29 +13,28 @@ export default function AuthenticatedRoutes({
     fieldErrors,
     formData,
     hasProfileChanges,
-    isAdmin,
     onCancelProfile,
     onChangeProfile,
     onSubmitProfile,
     token,
-    unidadeOrganizacionalId,
-    usuarioId,
-    isSavingProfile
+    isSavingProfile,
+    usuario,
+    organizacaoNome,
+    organizacaoLogoUrl,
+    onOrganizacaoLogoChange
 }) {
     return (
         <Routes>
             <Route index element={<HomeHero />} />
-            
-            <Route path="treinos" element={<TreinosPage token={token} usuarioId={usuarioId} usuarioNome={formData.nome} />} />
-            <Route path="treinos/novo" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} />} />
-
-            <Route path="equipamentos" element={<EquipamentosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
-            <Route path="equipamentos/novo" element={<NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
-            <Route path="feedback" element={<FeedbackEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} />} />
-
-            <Route path="aprovar-usuarios" element={isAdmin ? <ValidarUsuariosView token={token} /> : <Navigate to="/" replace />} />
-            <Route path="aprovar-empresas" element={isAdmin ? <AprovarUnidadeOrganizacionalView token={token} /> : <Navigate to="/" replace />} />
-
+            <Route path="alunos" element={<ManagementPage tipo="alunos" token={token} />} />
+            <Route path="planos" element={<ManagementPage tipo="planos" token={token} />} />
+            <Route path="instrutores" element={<ManagementPage tipo="instrutores" token={token} />} />
+            <Route path="controle-pagamentos" element={<ManagementPage tipo="pagamentos" token={token} />} />
+            <Route path="treinos" element={<TreinosPage token={token} usuarioId={usuario?.usuarioId} usuarioNome={formData.nome} />} />
+            <Route path="treinos/novo" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={usuario?.unidadeOrganizacionalId} usuarioId={usuario?.usuarioId} />} />
+            <Route path="equipamentos" element={<EquipamentosPage token={token} unidadeOrganizacionalId={usuario?.unidadeOrganizacionalId} />} />
+            <Route path="equipamentos/novo" element={<NovoEquipamentoPage token={token} unidadeOrganizacionalId={usuario?.unidadeOrganizacionalId} />} />
+            <Route path="feedback" element={<FeedbackEquipamentoPage token={token} unidadeOrganizacionalId={usuario?.unidadeOrganizacionalId} usuarioId={usuario?.usuarioId} />} />
             <Route path="instalar-ios" element={<InstallIosPage />} />
 
             <Route
@@ -50,6 +48,11 @@ export default function AuthenticatedRoutes({
                         onChange={onChangeProfile}
                         onSubmit={onSubmitProfile}
                         isSaving={isSavingProfile}
+                        token={token}
+                        usuario={usuario}
+                        organizacaoNome={organizacaoNome}
+                        organizacaoLogoUrl={organizacaoLogoUrl}
+                        onOrganizacaoLogoChange={onOrganizacaoLogoChange}
                     />
                 }
             />

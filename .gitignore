@@ -1,0 +1,10 @@
+/backend/.env.local.properties
+**/node_modules/
+**/target/
+**/dist/
+.DS_Store
+.vscode/
+**/.env
+**/.env.*
+!**/.env.example
+!**/.env.local.properties.example

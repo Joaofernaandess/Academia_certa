@@ -14,8 +14,12 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
 
     const comboRef = useRef(null);
     const listRef = useRef(null);
+    const unidadesCarregadasRef = useRef(false);
 
     useEffect(() => {
+        if (!isOpen || unidadesCarregadasRef.current) return undefined;
+
+        unidadesCarregadasRef.current = true;
         setLoading(true);
         carregarTodasPaginas((skip) => listarUnidadesOrganizacionais({ skip, aprovado: true }))
             .then(({ ok, itens }) => {
@@ -23,7 +27,7 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
             })
             .catch(() => setUnidades([]))
             .finally(() => setLoading(false));
-    }, []);
+    }, [isOpen]);
 
     const unidadesSeguras = Array.isArray(unidades) ? unidades : [];
 

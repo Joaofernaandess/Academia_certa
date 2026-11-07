@@ -28,7 +28,7 @@ public class AuthRepository extends BaseRepository {
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setString(1, username);
-            cmd.setObject(2, unidadeOrganizacionalId);
+            setUuid(cmd, 2, unidadeOrganizacionalId);
             try (ResultSet rs = cmd.executeQuery()) {
                 if (rs.next()) return mapUsuario(rs);
             }
@@ -44,7 +44,7 @@ public class AuthRepository extends BaseRepository {
             LIMIT 1;
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
-            cmd.setObject(1, usuarioId);
+            setUuid(cmd, 1, usuarioId);
             try (ResultSet rs = cmd.executeQuery()) {
                 if (rs.next()) return mapUsuario(rs);
             }
@@ -63,7 +63,7 @@ public class AuthRepository extends BaseRepository {
 
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql.toString())) {
             cmd.setString(1, codigoSms);
-            if (usuarioId != null) cmd.setObject(2, usuarioId);
+            if (usuarioId != null) setUuid(cmd, 2, usuarioId);
             try (ResultSet rs = cmd.executeQuery()) {
                 if (rs.next()) return mapCodigoAcesso(rs);
             }
@@ -82,7 +82,7 @@ public class AuthRepository extends BaseRepository {
             cmd.setTimestamp(1, agora);
             cmd.setString(2, codigoResetId);
             cmd.setTimestamp(3, agora);
-            cmd.setObject(4, usuarioId);
+            setUuid(cmd, 4, usuarioId);
             cmd.setString(5, codigoSms);
             cmd.executeUpdate();
         }
@@ -96,7 +96,7 @@ public class AuthRepository extends BaseRepository {
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setTimestamp(1, Timestamp.valueOf(DateTimeHelper.saoPaulo()));
-            cmd.setObject(2, usuarioId);
+            setUuid(cmd, 2, usuarioId);
             cmd.setString(3, codigoSms);
             cmd.executeUpdate();
         }
@@ -106,7 +106,7 @@ public class AuthRepository extends BaseRepository {
         String sql = "UPDATE usuario SET jornada_usuario = ? WHERE usuario_id = ?;";
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setInt(1, jornadaUsuario.getValor());
-            cmd.setObject(2, usuarioId);
+            setUuid(cmd, 2, usuarioId);
             return cmd.executeUpdate();
         }
     }
@@ -130,7 +130,7 @@ public class AuthRepository extends BaseRepository {
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql.toString())) {
             int idx = 1;
             cmd.setInt(idx++, quantidadeMinima);
-            cmd.setObject(idx++, usuarioId);
+            setUuid(cmd, idx++, usuarioId);
             cmd.setTimestamp(idx++, Timestamp.valueOf(dataSolicitacao));
 
             if (minutosCooldown != null) {
@@ -167,7 +167,7 @@ public class AuthRepository extends BaseRepository {
             VALUES (?, ?, ?, false);
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
-            cmd.setObject(1, usuarioId);
+            setUuid(cmd, 1, usuarioId);
             cmd.setString(2, codigo);
             cmd.setTimestamp(3, Timestamp.valueOf(DateTimeHelper.saoPaulo()));
             cmd.executeUpdate();
@@ -178,7 +178,7 @@ public class AuthRepository extends BaseRepository {
         String sql = "UPDATE usuario SET senha = ? WHERE usuario_id = ?;";
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setString(1, novaSenha);
-            cmd.setObject(2, usuarioId);
+            setUuid(cmd, 2, usuarioId);
             return cmd.executeUpdate();
         }
     }

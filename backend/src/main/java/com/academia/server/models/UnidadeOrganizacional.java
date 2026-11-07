@@ -1,5 +1,7 @@
 package com.academia.server.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.UUID;
 
 public class UnidadeOrganizacional {
@@ -19,6 +21,8 @@ public class UnidadeOrganizacional {
     private String email = "";
     private String telefone = "";
     private boolean aprovado;
+    private String logoUrl;
+    private String logoDataUrl;
 
     public UUID getUnidadeOrganizacionalId() { return unidadeOrganizacionalId; }
     public void setUnidadeOrganizacionalId(UUID unidadeOrganizacionalId) { this.unidadeOrganizacionalId = unidadeOrganizacionalId; }
@@ -52,4 +56,9 @@ public class UnidadeOrganizacional {
     public void setTelefone(String telefone) { this.telefone = telefone; }
     public boolean isAprovado() { return aprovado; }
     public void setAprovado(boolean aprovado) { this.aprovado = aprovado; }
+    public String getLogoUrl() { return logoUrl; }
+    public void setLogoUrl(String logoUrl) { this.logoUrl = logoUrl; }
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    public String getLogoDataUrl() { return logoDataUrl; }
+    public void setLogoDataUrl(String logoDataUrl) { this.logoDataUrl = logoDataUrl; }
 }

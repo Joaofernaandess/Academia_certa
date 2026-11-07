@@ -19,22 +19,21 @@ public class UsuarioRepository extends BaseRepository {
     }
 
     public UUID cadastrar(Usuario usuario) throws SQLException {
+        UUID usuarioId = UUID.randomUUID();
         String sql = """
-            INSERT INTO usuario (username, senha, nome, perfil, unidade_organizacional_id, cadastro_completo, jornada_usuario)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            RETURNING usuario_id;
+            INSERT INTO usuario (usuario_id, username, senha, nome, perfil, unidade_organizacional_id, cadastro_completo, jornada_usuario)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
-            cmd.setString(1, usuario.getUsername());
-            cmd.setString(2, usuario.getSenha());
-            cmd.setString(3, usuario.getNome());
-            cmd.setInt(4, usuario.getPerfil().getValor());
-            cmd.setObject(5, usuario.getUnidadeOrganizacionalId());
-            cmd.setBoolean(6, usuario.isCadastroCompleto());
-            cmd.setInt(7, usuario.getJornadaUsuario().getValor());
-            try (ResultSet rs = cmd.executeQuery()) {
-                if (rs.next()) return getUuidNullable(rs, "usuario_id");
-            }
+            setUuid(cmd, 1, usuarioId);
+            cmd.setString(2, usuario.getUsername());
+            cmd.setString(3, usuario.getSenha());
+            cmd.setString(4, usuario.getNome());
+            cmd.setInt(5, usuario.getPerfil().getValor());
+            setUuid(cmd, 6, usuario.getUnidadeOrganizacionalId());
+            cmd.setBoolean(7, usuario.isCadastroCompleto());
+            cmd.setInt(8, usuario.getJornadaUsuario().getValor());
+            if (cmd.executeUpdate() > 0) return usuarioId;
         }
         return null;
     }
@@ -43,7 +42,7 @@ public class UsuarioRepository extends BaseRepository {
         String sql = "UPDATE usuario SET nome = ? WHERE usuario_id = ?;";
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setString(1, usuario.getNome());
-            cmd.setObject(2, usuarioId);
+            setUuid(cmd, 2, usuarioId);
             return cmd.executeUpdate();
         }
     }
@@ -54,7 +53,7 @@ public class UsuarioRepository extends BaseRepository {
             FROM usuario WHERE usuario_id = ? LIMIT 1;
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
-            cmd.setObject(1, usuarioId);
+            setUuid(cmd, 1, usuarioId);
             try (ResultSet rs = cmd.executeQuery()) {
                 if (rs.next()) {
                     Usuario u = new Usuario();
@@ -82,7 +81,7 @@ public class UsuarioRepository extends BaseRepository {
             LEFT JOIN unidade_organizacional uo ON u.unidade_organizacional_id = uo.unidade_organizacional_id
             WHERE 1 = 1
         """);
-        if (username != null && !username.isBlank()) sql.append(" AND u.username ILIKE ?");
+        if (username != null && !username.isBlank()) sql.append(" AND LOWER(u.username) LIKE LOWER(?)");
         if (unidadeOrganizacionalId != null) sql.append(" AND u.unidade_organizacional_id = ?");
         if (cadastroCompleto != null) sql.append(" AND u.cadastro_completo = ?");
         sql.append(" ORDER BY u.nome ASC LIMIT ? OFFSET ?;");
@@ -90,7 +89,7 @@ public class UsuarioRepository extends BaseRepository {
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql.toString())) {
             int idx = 1;
             if (username != null && !username.isBlank()) cmd.setString(idx++, "%" + username.trim() + "%");
-            if (unidadeOrganizacionalId != null) cmd.setObject(idx++, unidadeOrganizacionalId);
+            if (unidadeOrganizacionalId != null) setUuid(cmd, idx++, unidadeOrganizacionalId);
             if (cadastroCompleto != null) cmd.setBoolean(idx++, cadastroCompleto);
             cmd.setInt(idx++, top);
             cmd.setInt(idx, skip);
@@ -119,8 +118,8 @@ public class UsuarioRepository extends BaseRepository {
         """;
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setString(1, username);
-            cmd.setObject(2, unidadeOrganizacionalId);
-            cmd.setObject(3, ignoreId);
+            setUuid(cmd, 2, unidadeOrganizacionalId);
+            setUuid(cmd, 3, ignoreId);
             try (ResultSet rs = cmd.executeQuery()) {
                 return rs.next();
             }
@@ -131,7 +130,7 @@ public class UsuarioRepository extends BaseRepository {
         String sql = "UPDATE usuario SET cadastro_completo = true, jornada_usuario = ? WHERE usuario_id = ?;";
         try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
             cmd.setInt(1, JornadaUsuario.Completed.getValor());
-            cmd.setObject(2, usuarioId);
+            setUuid(cmd, 2, usuarioId);
             return cmd.executeUpdate();
         }
     }

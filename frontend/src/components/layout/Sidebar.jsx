@@ -8,10 +8,8 @@ const isIOS = () => {
     return /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
 };
 
-export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInstallClick, onLogoutClick, usuarioNome }) {
+export default function Sidebar({ isInstalled, organizacaoNome, organizacaoLogoUrl, onInstallClick, onLogoutClick, usuarioNome }) {
     const navigate = useNavigate();
-
-    const isCebudv = organizacaoNome?.toUpperCase().startsWith('CEBUDV');
 
     const closeMenu = () => {
         const menuToggle = document.getElementById('menu-toggle');
@@ -33,22 +31,26 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
 
                 <div className="sidebar-body">
                     <div className="sidebar-brand-block">
-                        <h3 className="sidebar-title">Gestão Fitness</h3>
-                        <p className="sidebar-subtitle">Academia Certa</p>
+                        <img
+                            className="sidebar-logo"
+                            src={organizacaoLogoUrl || '/academia-certa-logo.png'}
+                            alt={organizacaoNome ? `Logo da ${organizacaoNome}` : 'Academia Certa — Gestão Fitness'}
+                            onError={event => {
+                                event.currentTarget.onerror = null;
+                                event.currentTarget.src = '/academia-certa-logo.png';
+                            }}
+                        />
                     </div>
 
                     <div className="sidebar-nav">
                         <NavLink to="/" end onClick={closeMenu}>Início</NavLink>
+                        <NavLink to="/alunos" onClick={closeMenu}>Alunos</NavLink>
+                        <NavLink to="/planos" onClick={closeMenu}>Planos</NavLink>
+                        <NavLink to="/instrutores" onClick={closeMenu}>Instrutores</NavLink>
+                        <NavLink to="/controle-pagamentos" onClick={closeMenu}>Controle de Pagamento</NavLink>
                         <NavLink to="/treinos" onClick={closeMenu}>Treinos</NavLink>
                         <NavLink to="/equipamentos" onClick={closeMenu}>Equipamentos</NavLink>
                         <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
-
-                        {isAdmin && (
-                            <NavLink to="/aprovar-usuarios" onClick={closeMenu}>Aprovar Usuários</NavLink>
-                        )}
-                        {isAdmin && (
-                            <NavLink to="/aprovar-empresas" onClick={closeMenu}>Aprovar Empresas</NavLink>
-                        )}
                         {!isInstalled && (
                             <NavLink
                                 to="/instalar-ios"

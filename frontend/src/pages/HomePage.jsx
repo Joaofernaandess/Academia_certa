@@ -7,7 +7,9 @@ import { useProfileForm } from '../hooks/useProfileForm';
 import { usePwaInstall } from '../hooks/usePwaInstall';
 import AuthenticatedRoutes from '../routes/AuthenticatedRoutes';
 import { getNomeExibicaoUnidade, obterUnidadeOrganizacional } from '../services/unidadeOrganizacionalService';
+import { getBaseUrl } from '../utils/apiConfig';
 import { getUserFromToken } from '../utils/authUser';
+import { isDemoMode } from '../utils/demoMode';
 
 export default function HomePage({ token, onLogout }) {
     const usuario = useMemo(() => getUserFromToken(token), [token]);
@@ -28,16 +30,19 @@ export default function HomePage({ token, onLogout }) {
     const pwaInstall = usePwaInstall();
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [nomeUnidadeOrganizacional, setNomeUnidadeOrganizacional] = useState(usuario.unidadeOrganizacionalNome || '');
+    const [logoUnidadeOrganizacional, setLogoUnidadeOrganizacional] = useState('');
 
     useEffect(() => {
         let cancelado = false;
-        if (usuario.unidadeOrganizacionalNome) {
-            setNomeUnidadeOrganizacional(usuario.unidadeOrganizacionalNome);
+        setNomeUnidadeOrganizacional(usuario.unidadeOrganizacionalNome || '');
+
+        if (isDemoMode(token)) {
+            setLogoUnidadeOrganizacional('');
             return () => { cancelado = true; };
         }
 
         if (!usuario.unidadeOrganizacionalId) {
-            setNomeUnidadeOrganizacional('');
+            setLogoUnidadeOrganizacional('');
             return () => { cancelado = true; };
         }
 
@@ -45,43 +50,53 @@ export default function HomePage({ token, onLogout }) {
             .then(res => (res.ok ? res.json() : null))
             .then(data => {
                 if (cancelado || !data) return;
-                setNomeUnidadeOrganizacional(getNomeExibicaoUnidade(data));
+                if (!usuario.unidadeOrganizacionalNome) {
+                    setNomeUnidadeOrganizacional(getNomeExibicaoUnidade(data));
+                }
+                setLogoUnidadeOrganizacional(data.logoUrl ? `${getBaseUrl()}${data.logoUrl}` : '');
             })
             .catch(() => {
-                if (!cancelado) setNomeUnidadeOrganizacional('');
+                if (!cancelado) setLogoUnidadeOrganizacional('');
             });
 
         return () => { cancelado = true; };
-    }, [usuario.unidadeOrganizacionalId, usuario.unidadeOrganizacionalNome]);
+    }, [token, usuario.unidadeOrganizacionalId, usuario.unidadeOrganizacionalNome]);
 
-    const isCebudv = nomeUnidadeOrganizacional?.toUpperCase().startsWith('CEBUDV');
+    const handleOrganizationLogoChange = (hasLogo) => {
+        setLogoUnidadeOrganizacional(hasLogo ? `${getBaseUrl()}/v1/unidades-organizacionais/${usuario.unidadeOrganizacionalId}/logo?v=${Date.now()}` : '');
+    };
 
     return (
         <div className="app-shell">
             <input type="checkbox" id="menu-toggle" className="sidebar-checkbox" />
             <AppHeader />
             <Sidebar
-                isAdmin={usuario.isAdmin}
                 isInstalled={pwaInstall.isInstalled}
                 organizacaoNome={nomeUnidadeOrganizacional}
+                organizacaoLogoUrl={logoUnidadeOrganizacional}
                 onInstallClick={pwaInstall.install}
                 onLogoutClick={() => setShowLogoutModal(true)}
                 usuarioNome={usuario.nome}
             />
             <main className="container app-main">
+                {usuario.isDemo && (
+                    <div className="demo-mode-notice" role="status">
+                        Demonstração local: os dados são fictícios e as alterações não são salvas no banco.
+                    </div>
+                )}
                 <AuthenticatedRoutes
                     fieldErrors={fieldErrors}
                     formData={formData}
                     hasProfileChanges={hasChanges}
-                    isAdmin={usuario.isAdmin}
-                    isCebudv={isCebudv}
                     onCancelProfile={handleCancelProfile}
                     onChangeProfile={setFormData}
                     onSubmitProfile={handleUpdateData}
                     token={token}
-                    unidadeOrganizacionalId={formData.unidadeOrganizacionalId}
-                    usuarioId={usuario.usuarioId}
                     isSavingProfile={isSaving}
+                    usuario={usuario}
+                    organizacaoNome={nomeUnidadeOrganizacional}
+                    organizacaoLogoUrl={logoUnidadeOrganizacional}
+                    onOrganizacaoLogoChange={handleOrganizationLogoChange}
                 />
             </main>
 

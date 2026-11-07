@@ -12,6 +12,7 @@ import UnidadeOrganizacionalRegisterPage from '../pages/UnidadeOrganizacionalReg
 export default function AppRoutes({
     token,
     onLogin,
+    onDemoLogin,
     onLogout,
     onPendingApproval
 }) {
@@ -19,7 +20,7 @@ export default function AppRoutes({
         <Routes>
             <Route
                 path="/login"
-                element={token ? <Navigate to="/" replace /> : <LoginPage onLogin={onLogin} onPendingApproval={onPendingApproval} />}
+                element={token ? <Navigate to="/" replace /> : <LoginPage onLogin={onLogin} onDemoLogin={onDemoLogin} onPendingApproval={onPendingApproval} />}
             />
             <Route
                 path="/register"

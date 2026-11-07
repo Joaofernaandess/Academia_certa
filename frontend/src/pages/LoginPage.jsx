@@ -13,7 +13,7 @@ import { encryptedJsonBody } from '../utils/payloadCrypto';
 import { saveRouteSessionState } from '../utils/routeSessionState';
 import LoadingButton from '../components/LoadingButton';
 
-export default function LoginPage({ onLogin, onPendingApproval }) {
+export default function LoginPage({ onLogin, onDemoLogin, onPendingApproval }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', senha: '', unidadeOrganizacionalId: '' });
     const [erro, setErro] = useState('');
@@ -143,13 +143,25 @@ export default function LoginPage({ onLogin, onPendingApproval }) {
                                     Entrar
                                 </LoadingButton>
                                 <div className="auth-link-row">
-                                    <Link className="link-action" to="/register" loading={loading}>
+                                    <Link className="link-action" to="/register">
                                         Registrar
                                     </Link>
-                                    <Link className="link-action" to="/forgot-password" loading={loading}>
+                                    <Link className="link-action" to="/forgot-password">
                                         Esqueci a senha
                                     </Link>
                                 </div>
+                                {import.meta.env.DEV && onDemoLogin && (
+                                    <div className="demo-login">
+                                        <button
+                                            type="button"
+                                            className="button button-outline button-full"
+                                            onClick={onDemoLogin}
+                                        >
+                                            Ver telas de demonstração
+                                        </button>
+                                        <p>Prévia local com dados fictícios. Não usa nem altera o banco.</p>
+                                    </div>
+                                )}
                             </div>
                         </form>
                     </div>

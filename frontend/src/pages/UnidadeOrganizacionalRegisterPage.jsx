@@ -8,6 +8,8 @@ import { aplicarErrosCampos, extrairErro } from '../utils/apiUtils';
 import { formatCnpj } from '../utils/cnpj';
 import { encryptedJsonBody } from '../utils/payloadCrypto';
 import LoadingButton from '../components/LoadingButton';
+import OrganizationLogoField from '../components/OrganizationLogoField';
+import { fileToDataUrl, validateOrganizationLogo } from '../utils/organizationLogo';
 
 export default function UnidadeOrganizacionalRegisterPage() {
     const navigate = useNavigate();
@@ -20,6 +22,8 @@ export default function UnidadeOrganizacionalRegisterPage() {
     const [erro, setErro] = useState('');
     const [fieldErrors, setFieldErrors] = useState({});
     const [loading, setLoading] = useState(false);
+    const [logoFile, setLogoFile] = useState(null);
+    const [logoError, setLogoError] = useState('');
 
     const setCampo = (campo, valor) => {
         setFormData(prev => ({ ...prev, [campo]: valor }));
@@ -39,13 +43,23 @@ export default function UnidadeOrganizacionalRegisterPage() {
 
         setErro('');
         setFieldErrors({});
+        const logoValidationError = logoFile ? validateOrganizationLogo(logoFile) : '';
+        setLogoError(logoValidationError);
+        if (logoValidationError) {
+            setLoading(false);
+            return;
+        }
         setLoading(true);
 
         try {
+            const payload = {
+                ...formData,
+                logoDataUrl: logoFile ? await fileToDataUrl(logoFile) : null
+            };
             const response = await fetch(`${getBaseUrl()}/v1/unidades-organizacionais`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: await encryptedJsonBody(formData)
+                body: await encryptedJsonBody(payload)
             });
 
             if (response.ok) {
@@ -86,6 +100,20 @@ export default function UnidadeOrganizacionalRegisterPage() {
                             </div>
 
                             <div className="auth-flow-body">
+                                <OrganizationLogoField
+                                    file={logoFile}
+                                    error={logoError || fieldErrors.Logo || fieldErrors.logoDataUrl}
+                                    onChange={file => {
+                                        setLogoFile(file);
+                                        setLogoError(file ? validateOrganizationLogo(file) : '');
+                                        setFieldErrors(prev => ({
+                                            ...prev,
+                                            Logo: '',
+                                            logoDataUrl: ''
+                                        }));
+                                    }}
+                                />
+
                                 <div className="mb-1">
                                     <label>Razão Social</label>
                                     <input

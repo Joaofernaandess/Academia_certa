@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import MessageModal from './components/MessageModal';
 import AppRoutes from './routes/AppRoutes';
 import LandscapeWarning from './components/LandscapeWarning';
+import { DEMO_TOKEN } from './utils/demoMode';
+import './styles/app-shell.css';
 
 export default function App() {
     const navigate = useNavigate();
@@ -48,6 +50,7 @@ export default function App() {
             <AppRoutes
                 token={token}
                 onLogin={handleLogin}
+                onDemoLogin={import.meta.env.DEV ? () => handleLogin(DEMO_TOKEN) : undefined}
                 onLogout={handleLogout}
                 onPendingApproval={handlePendingApproval}
             />
