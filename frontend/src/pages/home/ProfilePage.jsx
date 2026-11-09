@@ -91,7 +91,7 @@ export default function ProfilePage({
                         file={logoFile}
                         existingUrl={organizacaoLogoUrl}
                         error={logoError}
-                        disabled={!usuario.isAdmin || usuario.isDemo || isSavingLogo}
+                        disabled={!usuario.isAdmin || isSavingLogo}
                         onChange={handleLogoChange}
                     />
                     {usuario.isAdmin ? (
@@ -99,13 +99,13 @@ export default function ProfilePage({
                             <LoadingButton
                                 type="button"
                                 className="button"
-                                disabled={usuario.isDemo || !logoFile || Boolean(logoError)}
+                                disabled={!logoFile || Boolean(logoError)}
                                 loading={isSavingLogo}
                                 onClick={handleSaveLogo}
                             >
                                 Salvar logo
                             </LoadingButton>
-                            {organizacaoLogoUrl && !usuario.isDemo && (
+                            {organizacaoLogoUrl && (
                                 <button
                                     type="button"
                                     className="button button-outline"
@@ -118,9 +118,6 @@ export default function ProfilePage({
                         </div>
                     ) : (
                         <p className="organization-logo-help">Somente um administrador da academia pode alterar esta logo.</p>
-                    )}
-                    {usuario.isDemo && (
-                        <p className="organization-logo-help">A troca de logo fica desativada na demonstração local.</p>
                     )}
                     {logoMessage && <p className="organization-logo-message" role="status">{logoMessage}</p>}
                 </div>

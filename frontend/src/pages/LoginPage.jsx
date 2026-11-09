@@ -13,7 +13,7 @@ import { encryptedJsonBody } from '../utils/payloadCrypto';
 import { saveRouteSessionState } from '../utils/routeSessionState';
 import LoadingButton from '../components/LoadingButton';
 
-export default function LoginPage({ onLogin, onDemoLogin, onPendingApproval }) {
+export default function LoginPage({ onLogin, onPendingApproval }) {
     const navigate = useNavigate();
     const [formData, setFormData] = useState({ username: '', senha: '', unidadeOrganizacionalId: '' });
     const [erro, setErro] = useState('');
@@ -150,18 +150,6 @@ export default function LoginPage({ onLogin, onDemoLogin, onPendingApproval }) {
                                         Esqueci a senha
                                     </Link>
                                 </div>
-                                {import.meta.env.DEV && onDemoLogin && (
-                                    <div className="demo-login">
-                                        <button
-                                            type="button"
-                                            className="button button-outline button-full"
-                                            onClick={onDemoLogin}
-                                        >
-                                            Ver telas de demonstração
-                                        </button>
-                                        <p>Prévia local com dados fictícios. Não usa nem altera o banco.</p>
-                                    </div>
-                                )}
                             </div>
                         </form>
                     </div>

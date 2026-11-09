@@ -1,6 +1,5 @@
 import { getBaseUrl } from '../utils/apiConfig';
 import { authHeaders } from './httpHeaders';
-import { isDemoMode } from '../utils/demoMode';
 
 export const getNomeExibicaoUnidade = (unidade) => {
     if (!unidade) return '';
@@ -25,12 +24,6 @@ export const listarUnidadesOrganizacionais = (params = {}) => {
 };
 
 export const obterUnidadeOrganizacional = (unidadeOrganizacionalId) => {
-    if (unidadeOrganizacionalId === 'demo-academia') {
-        return Promise.resolve({
-            ok: true,
-            json: async () => ({ nomeFantasia: 'Academia Demonstração', razaoSocial: 'Academia Demonstração' })
-        });
-    }
     return fetch(`${getBaseUrl()}/v1/unidades-organizacionais/${unidadeOrganizacionalId}`);
 };
 

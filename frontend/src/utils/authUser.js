@@ -1,19 +1,6 @@
 import { parseJwt } from './jwt';
-import { isDemoMode } from './demoMode';
 
 export const getUserFromToken = (token) => {
-    if (isDemoMode(token)) {
-        return {
-            usuarioId: 'demo-user',
-            username: 'demo',
-            unidadeOrganizacionalId: 'demo-academia',
-            unidadeOrganizacionalNome: 'Academia Demonstração',
-            nome: 'Visitante',
-            isAdmin: true,
-            isDemo: true
-        };
-    }
-
     const decoded = parseJwt(token);
     if (!decoded) {
         return {
@@ -22,8 +9,7 @@ export const getUserFromToken = (token) => {
             unidadeOrganizacionalId: '',
             unidadeOrganizacionalNome: '',
             nome: '',
-            isAdmin: false,
-            isDemo: false
+            isAdmin: false
         };
     }
 
@@ -35,7 +21,6 @@ export const getUserFromToken = (token) => {
         unidadeOrganizacionalId: decoded.UnidadeOrganizacionalId || '',
         unidadeOrganizacionalNome: decoded.UnidadeOrganizacionalNome || decoded.NomeUnidadeOrganizacional || decoded.nomeUnidadeOrganizacional || '',
         nome: decoded.Nome || decoded.nome || '',
-        isDemo: false,
         cadastroCompleto: decoded.CadastroCompleto === 'True' || decoded.CadastroCompleto === true,
         jornadaUsuario: decoded.JornadaUsuario || '',
         isAdmin: role === 'Admin'

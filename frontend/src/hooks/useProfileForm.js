@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { getBaseUrl } from '../utils/apiConfig';
 import { aplicarErrosCampos, extrairErro, extrairMensagem } from '../utils/apiUtils';
 import { encryptedJsonBody } from '../utils/payloadCrypto';
-import { isDemoMode } from '../utils/demoMode';
 
 export const useProfileForm = ({ token, usuario }) => {
     const navigate = useNavigate();
@@ -34,11 +33,6 @@ export const useProfileForm = ({ token, usuario }) => {
         const payload = { nome: formData.nome };
 
         try {
-            if (isDemoMode(token)) {
-                setSucesso('Alteração demonstrativa concluída. Nenhum dado foi enviado ao servidor.');
-                return;
-            }
-
             const response = await fetch(`${getBaseUrl()}/v1/usuarios/${usuario.usuarioId}/nome`, {
                 method: 'PATCH',
                 headers: {

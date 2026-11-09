@@ -9,7 +9,6 @@ import AuthenticatedRoutes from '../routes/AuthenticatedRoutes';
 import { getNomeExibicaoUnidade, obterUnidadeOrganizacional } from '../services/unidadeOrganizacionalService';
 import { getBaseUrl } from '../utils/apiConfig';
 import { getUserFromToken } from '../utils/authUser';
-import { isDemoMode } from '../utils/demoMode';
 
 export default function HomePage({ token, onLogout }) {
     const usuario = useMemo(() => getUserFromToken(token), [token]);
@@ -35,11 +34,6 @@ export default function HomePage({ token, onLogout }) {
     useEffect(() => {
         let cancelado = false;
         setNomeUnidadeOrganizacional(usuario.unidadeOrganizacionalNome || '');
-
-        if (isDemoMode(token)) {
-            setLogoUnidadeOrganizacional('');
-            return () => { cancelado = true; };
-        }
 
         if (!usuario.unidadeOrganizacionalId) {
             setLogoUnidadeOrganizacional('');
@@ -79,11 +73,6 @@ export default function HomePage({ token, onLogout }) {
                 usuarioNome={usuario.nome}
             />
             <main className="container app-main">
-                {usuario.isDemo && (
-                    <div className="demo-mode-notice" role="status">
-                        Demonstração local: os dados são fictícios e as alterações não são salvas no banco.
-                    </div>
-                )}
                 <AuthenticatedRoutes
                     fieldErrors={fieldErrors}
                     formData={formData}

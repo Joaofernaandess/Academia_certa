@@ -2,26 +2,6 @@
 
 Sistema de gestão de academias com frontend React e API Java/Spring Boot.
 
-## Ver as telas sem login (modo demonstração)
-
-Para navegar pelas telas sem configurar banco de dados ou entrar com uma conta:
-
-1. Instale o Node.js (20.19+ ou 22.12+) e abra um terminal na pasta `frontend`.
-2. Instale as dependências e inicie o frontend:
-
-   ```powershell
-   npm install
-   npm run dev
-   ```
-
-3. Abra `http://localhost:5173` e clique em **Ver telas de demonstração** na tela
-   de login.
-
-O modo demonstração mostra as telas de início, alunos, planos, instrutores,
-pagamentos e perfil com dados fictícios. É uma prévia local do frontend: não
-acessa nem grava dados no backend ou no banco, e as alterações feitas na prévia
-se perdem ao recarregar a página. O botão só aparece durante `npm run dev`.
-
 ## Rodar o sistema completo localmente
 
 Requisitos: Node.js, Java JDK 25, Maven e MySQL 8. O backend usa MySQL na porta
@@ -61,5 +41,5 @@ Requisitos: Node.js, Java JDK 25, Maven e MySQL 8. O backend usa MySQL na porta
 5. Abra `http://localhost:5173`, cadastre a academia e uma conta para entrar no
    sistema. O cadastro de alunos, planos, instrutores e pagamentos fica no menu.
 
-O modo demonstração serve para conhecer a interface sem login; cadastros reais e
-persistência de dados exigem o backend, o banco e uma conta válida.
+O acesso às telas internas e a persistência de dados exigem o backend, o banco e
+uma conta válida.
