@@ -36,13 +36,15 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
                         <h3 className="sidebar-title">Gestão Fitness</h3>
                         <p className="sidebar-subtitle">Academia Certa</p>
                     </div>
-
                     <div className="sidebar-nav">
                         <NavLink to="/" end onClick={closeMenu}>Início</NavLink>
                         <NavLink to="/treinos" onClick={closeMenu}>Treinos</NavLink>
                         <NavLink to="/equipamentos" onClick={closeMenu}>Equipamentos</NavLink>
                         <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
 
+                        {isAdmin && (
+                            <NavLink to="/equipamentos-avaliados" onClick={closeMenu}>Equipamentos Avaliados</NavLink>
+                        )}
                         {isAdmin && (
                             <NavLink to="/aprovar-usuarios" onClick={closeMenu}>Aprovar Usuários</NavLink>
                         )}

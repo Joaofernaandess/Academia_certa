@@ -1,7 +1,7 @@
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from 'chart.js';
 import { useEffect, useMemo, useState } from 'react';
 import { Doughnut } from 'react-chartjs-2';
-import { formatQuantityMasked } from '../../utils/quantity';
+import { formatQuantity } from '../../utils/quantity';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -35,13 +35,12 @@ const LIGHT_PALETTE = [
   '#E5E7EB',
 ];
 
-export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L' }) {
+export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'avaliações' }) {
   const [hiddenItems, setHiddenItems] = useState({});
   const [outlinedItems, setOutlinedItems] = useState({});
-
   const isLight = theme === 'light';
   const palette = isLight ? LIGHT_PALETTE : DARK_PALETTE;
-  const outlineColor = isLight ? '#000000' : '#000000';
+  const outlineColor = '#000000';
 
   useEffect(() => {
     setHiddenItems({});
@@ -80,7 +79,7 @@ export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L
         },
         tooltip: {
           callbacks: {
-            label: (ctx) => ` ${ctx.label}: ${formatQuantityMasked(ctx.parsed)} ${unidade}`,
+            label: (ctx) => ` ${ctx.label}: ${formatQuantity(ctx.parsed)} ${unidade}`,
           },
         },
       },
@@ -91,7 +90,6 @@ export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L
   const handleColorClick = (event, index) => {
     event.preventDefault();
     event.stopPropagation();
-
     setOutlinedItems((prev) => ({
       ...prev,
       [index]: !prev[index],
@@ -101,7 +99,6 @@ export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L
   const handleTextClick = (event, index) => {
     event.preventDefault();
     event.stopPropagation();
-
     setHiddenItems((prev) => ({
       ...prev,
       [index]: !prev[index],
@@ -113,7 +110,6 @@ export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L
       <div className="dashboard-chart-canvas">
         <Doughnut data={chartData} options={options} />
       </div>
-
       <div className="dashboard-chart-legend">
         {data.map((item, index) => {
           const isHidden = !!hiddenItems[index];
@@ -133,21 +129,17 @@ export default function PizzaDashboardChart({ data, theme = 'dark', unidade = 'L
           ].filter(Boolean).join(' ');
 
           return (
-            <div
-              key={`${item.label}-${index}`}
-              className={itemClassName}
-            >
+            <div key={`${item.label}-${index}`} className={itemClassName}>
               <button
                 type="button"
                 onClick={(event) => handleColorClick(event, index)}
                 title="Contornar fatia no gráfico"
                 className={swatchClassName}
               />
-
               <button
                 type="button"
                 onClick={(event) => handleTextClick(event, index)}
-                title="Mostrar ou ocultar espaço no gráfico"
+                title="Mostrar ou ocultar equipamento no gráfico"
                 className={labelClassName}
               >
                 {item.label}

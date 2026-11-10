@@ -10,8 +10,8 @@ export const criarFeedback = ({ token, payload }) => (
     })
 );
 
-export const listarFeedbacks = ({ token, unidadeOrganizacionalId, equipamentoId = '' }) => {
-    const query = new URLSearchParams({ unidadeOrganizacionalId });
+export const listarFeedbacks = ({ token, unidadeOrganizacionalId, equipamentoId = '', top = 500 }) => {
+    const query = new URLSearchParams({ unidadeOrganizacionalId, top: String(top) });
     if (equipamentoId) query.set('equipamentoId', equipamentoId);
     return fetch(`${getBaseUrl()}/v1/feedbacks?${query.toString()}`, {
         headers: authHeaders(token)
