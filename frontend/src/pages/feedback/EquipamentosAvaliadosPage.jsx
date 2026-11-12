@@ -107,11 +107,11 @@ export default function EquipamentosAvaliadosPage({ token, unidadeOrganizacional
         });
     };
 
-    return (
-        <div className="w-full avaliacoes-admin-container">
-            <div className="detail-heading mb-1">
-                <h2 className="page-title no-margin">Equipamentos Avaliados</h2>
-            </div>
+        return (
+            <div className="detail-view w-full avaliacoes-admin-container">
+                <div className="detail-heading mb-1">
+                    <h2 className="page-title no-margin">Equipamentos Avaliados</h2>
+                </div>
 
             {loading ? (
                 <LoadingWaves variant="cards" rows={3} label="Carregando avaliações" />

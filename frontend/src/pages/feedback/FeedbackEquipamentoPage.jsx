@@ -1,7 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import EquipamentoComboBox from '../../components/EquipamentoCombobox';
 import LoadingButton from '../../components/LoadingButton';
 import MessageModal from '../../components/MessageModal';
+import ZeniteIcon from '../../components/ZeniteIcon';
 import { listarEquipamentos } from '../../services/equipamentoService';
 import { criarFeedback, listarFeedbacks } from '../../services/feedbackService';
 import { aplicarErrosCampos, extrairErro, extrairMensagem } from '../../utils/apiUtils';
@@ -9,8 +11,10 @@ import { aplicarErrosCampos, extrairErro, extrairMensagem } from '../../utils/ap
 const IMAGEM_PADRAO = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80';
 
 export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId, usuarioId }) {
+    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const equipamentoUrlId = searchParams.get('equipamentoId') || '';
+    const veioDeEquipamentos = Boolean(equipamentoUrlId);
 
     const [equipamentos, setEquipamentos] = useState([]);
     const [equipamentoId, setEquipamentoId] = useState(equipamentoUrlId);
@@ -22,9 +26,11 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
     const [erro, setErro] = useState('');
     const [sucesso, setSucesso] = useState('');
     const [loading, setLoading] = useState(false);
+    const [loadingEquipamentos, setLoadingEquipamentos] = useState(true);
 
     const carregarDados = useCallback(async () => {
         if (!unidadeOrganizacionalId) return;
+        setLoadingEquipamentos(true);
         try {
             const [resEq, resFb] = await Promise.all([
                 listarEquipamentos({ token, unidadeOrganizacionalId }),
@@ -33,21 +39,27 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
             if (resEq.ok) {
                 const listaEq = await resEq.json();
                 setEquipamentos(listaEq);
-                if (!equipamentoId && listaEq.length > 0) {
-                    setEquipamentoId(listaEq[0].equipamentoId);
-                }
+                setEquipamentoId(prev => prev || (listaEq.length > 0 ? listaEq[0].equipamentoId : ''));
             }
             if (resFb.ok) {
                 setFeedbacks(await resFb.json());
             }
         } catch (e) {
             console.error(e);
+        } finally {
+            setLoadingEquipamentos(false);
         }
-    }, [token, unidadeOrganizacionalId, equipamentoId]);
+    }, [token, unidadeOrganizacionalId]);
 
     useEffect(() => {
         carregarDados();
     }, [carregarDados]);
+
+    useEffect(() => {
+        if (equipamentoUrlId) {
+            setEquipamentoId(equipamentoUrlId);
+        }
+    }, [equipamentoUrlId]);
 
     const equipamentoSelecionado = equipamentos.find(e => e.equipamentoId === equipamentoId);
 
@@ -72,7 +84,12 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
             });
 
             if (res.ok) {
-                setSucesso(await extrairMensagem(res));
+                const mensagem = await extrairMensagem(res);
+                if (veioDeEquipamentos) {
+                    navigate('/equipamentos', { replace: true, state: { sucesso: mensagem } });
+                    return;
+                }
+                setSucesso(mensagem);
                 setComentario('');
                 setEstrelas(5);
                 carregarDados();
@@ -94,23 +111,15 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                 <h2 className="page-title no-margin">FEEDBACK DE EQUIPAMENTOS</h2>
             </div>
 
-            <form className="card detail-card feedback-form-card" onSubmit={handleSubmit} noValidate>
-                <div className="mb-1">
-                    <label className="label-sm">Selecione o Equipamento</label>
-                    <select
-                        value={equipamentoId}
-                        onChange={(e) => setEquipamentoId(e.target.value)}
-                        className={`w-full no-field-margin ${fieldErrors.EquipamentoId ? 'is-invalid' : ''}`}
-                    >
-                        <option value="">Selecione...</option>
-                        {equipamentos.map(eq => (
-                            <option key={eq.equipamentoId} value={eq.equipamentoId}>
-                                {eq.nome}
-                            </option>
-                        ))}
-                    </select>
-                    {fieldErrors.EquipamentoId && <small className="invalid-feedback d-block">{fieldErrors.EquipamentoId}</small>}
-                </div>
+            <form id="feedback-equipamento-form" className="card detail-card feedback-form-card" onSubmit={handleSubmit} noValidate>
+                <EquipamentoComboBox
+                    equipamentos={equipamentos}
+                    value={equipamentoId}
+                    onChange={setEquipamentoId}
+                    loading={loadingEquipamentos}
+                    error={!!fieldErrors.EquipamentoId}
+                    errorMessage={fieldErrors.EquipamentoId}
+                />
 
                 <div className="feedback-preview-box">
                     <img
@@ -141,7 +150,7 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                 </div>
                 {fieldErrors.Estrelas && <small className="invalid-feedback d-block mb-1">{fieldErrors.Estrelas}</small>}
 
-                <div className="mb-2">
+                <div>
                     <textarea
                         rows={4}
                         placeholder="Deixe seu comentário ou feedback..."
@@ -151,31 +160,50 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                     />
                     {fieldErrors.Comentario && <small className="invalid-feedback d-block">{fieldErrors.Comentario}</small>}
                 </div>
-
-                <LoadingButton type="submit" className="button button-full" loading={loading}>
-                    Enviar
-                </LoadingButton>
             </form>
 
             {feedbacks.length > 0 && (
                 <div className="mt-2">
                     <h3 className="page-title mb-1 feedback-history-title">Últimos Feedbacks</h3>
-                    {feedbacks.map(fb => (
-                        <div key={fb.feedbackId} className="card mb-1 feedback-history-card">
-                            <div className="feedback-history-header">
-                                <strong>{fb.equipamentoNome}</strong>
-                                <span className="feedback-history-stars">
-                                    {'★'.repeat(fb.estrelas)}{'☆'.repeat(5 - fb.estrelas)}
-                                </span>
+                    <div className="feedback-history-scroll">
+                        {feedbacks.map(fb => (
+                            <div key={fb.feedbackId} className="card mb-1 feedback-history-card">
+                                <div className="feedback-history-header">
+                                    <strong>{fb.equipamentoNome}</strong>
+                                    <span className="feedback-history-stars">
+                                        {'★'.repeat(fb.estrelas)}{'☆'.repeat(5 - fb.estrelas)}
+                                    </span>
+                                </div>
+                                <p className="feedback-history-comment">{fb.comentario}</p>
+                                <small className="text-muted">
+                                    Por: {fb.usuarioNome || 'Aluno'}
+                                </small>
                             </div>
-                            <p className="feedback-history-comment">{fb.comentario}</p>
-                            <small className="text-muted">
-                                Por: {fb.usuarioNome || 'Aluno'}
-                            </small>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             )}
+
+            <div className={`detail-action-bar ${veioDeEquipamentos ? 'detail-action-bar-two' : 'detail-action-bar-one'}`}>
+                {veioDeEquipamentos && (
+                    <button
+                        type="button"
+                        className="button button-outline"
+                        onClick={() => navigate('/equipamentos')}
+                    >
+                        Voltar
+                    </button>
+                )}
+                <LoadingButton
+                    type="submit"
+                    form="feedback-equipamento-form"
+                    className={`button ${veioDeEquipamentos ? '' : 'academia-action-btn-main'}`}
+                    loading={loading}
+                >
+                    <ZeniteIcon name="save" size={18} />
+                    <span className="button-icon-text">Enviar</span>
+                </LoadingButton>
+            </div>
 
             {(erro || sucesso) && (
                 <MessageModal

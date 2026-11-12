@@ -158,3 +158,16 @@ SELECT unidade_organizacional_id, extensora_id, usuario_id, 3, 'Dá pro gasto.' 
 
 SELECT unidade_organizacional_id, leg_id, usuario_id, 4, 'Aparelho firme, muito bom.' FROM dados UNION ALL
 SELECT unidade_organizacional_id, leg_id, usuario_id, 2, 'O trilho está agarrando muito, favor lubrificar.' FROM dados;
+
+
+
+
+-- 1. Limpa todos os Treinos (Os exercícios somem automaticamente via CASCADE)
+DELETE FROM academia_certa.treino;
+
+-- 2. Limpa todos os Equipamentos (Os feedbacks somem automaticamente via CASCADE)
+DELETE FROM academia_certa.equipamento;
+
+-- 3. Deleta APENAS os 4 usuários fictícios de teste (Maria, Carlos, Ana e Pedro)
+DELETE FROM academia_certa.usuario 
+WHERE username IN ('11999990001', '11999990002', '11999990003', '11999990004');

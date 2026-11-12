@@ -1,13 +1,17 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import LoadingButton from '../../components/LoadingButton';
+import LoadingWaves from '../../components/LoadingWaves';
 import MessageModal from '../../components/MessageModal';
 import ZeniteIcon from '../../components/ZeniteIcon';
-import { criarEquipamento } from '../../services/equipamentoService';
+import { atualizarEquipamento, criarEquipamento, obterEquipamento } from '../../services/equipamentoService';
 import { aplicarErrosCampos, extrairErro, extrairMensagem } from '../../utils/apiUtils';
 
 export default function NovoEquipamentoPage({ token, unidadeOrganizacionalId }) {
     const navigate = useNavigate();
+    const { equipamentoId } = useParams();
+    const isEdit = Boolean(equipamentoId);
+
     const [formData, setFormData] = useState({
         nome: '',
         grupoMuscular: '',
@@ -16,6 +20,27 @@ export default function NovoEquipamentoPage({ token, unidadeOrganizacionalId }) 
     const [fieldErrors, setFieldErrors] = useState({});
     const [erro, setErro] = useState('');
     const [loading, setLoading] = useState(false);
+    const [carregando, setCarregando] = useState(isEdit);
+
+    useEffect(() => {
+        if (!isEdit) return;
+        setCarregando(true);
+        obterEquipamento({ token, equipamentoId })
+            .then(async (res) => {
+                if (res.ok) {
+                    const data = await res.json();
+                    setFormData({
+                        nome: data.nome || '',
+                        grupoMuscular: data.grupoMuscular || '',
+                        imagemUrl: data.imagemUrl || ''
+                    });
+                } else {
+                    setErro(await extrairErro(res));
+                }
+            })
+            .catch(() => setErro('Não foi possível carregar os dados do equipamento.'))
+            .finally(() => setCarregando(false));
+    }, [equipamentoId, isEdit, token]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,14 +49,15 @@ export default function NovoEquipamentoPage({ token, unidadeOrganizacionalId }) 
         setFieldErrors({});
         setLoading(true);
 
+        const payload = {
+            unidadeOrganizacionalId,
+            ...formData
+        };
+
         try {
-            const response = await criarEquipamento({
-                token,
-                payload: {
-                    unidadeOrganizacionalId,
-                    ...formData
-                }
-            });
+            const response = isEdit
+                ? await atualizarEquipamento({ token, equipamentoId, payload })
+                : await criarEquipamento({ token, payload });
 
             if (response.ok) {
                 const mensagem = await extrairMensagem(response);
@@ -48,10 +74,16 @@ export default function NovoEquipamentoPage({ token, unidadeOrganizacionalId }) 
         }
     };
 
+    if (carregando) {
+        return <LoadingWaves variant="cards" rows={2} label="Carregando equipamento" />;
+    }
+
     return (
         <div className="detail-view detail-form-view space-detail-form-view space-create-form-view w-full">
             <div className="detail-heading">
-                <h2 className="page-title no-margin">Novo Equipamento</h2>
+                <h2 className="page-title no-margin">
+                    {isEdit ? 'Editar Equipamento' : 'Novo Equipamento'}
+                </h2>
             </div>
             <form className="detail-form-layout" onSubmit={handleSubmit} noValidate>
                 <div className="card detail-card detail-form-scroll-card">

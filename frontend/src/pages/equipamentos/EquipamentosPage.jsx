@@ -116,6 +116,7 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
                                     </div>
                                     <div className="inventory-card-footer space-list-card-footer">
                                         <button
+                                            type="button"
                                             className="button button-outline inventory-card-action"
                                             onClick={() => navigate(`/feedback?equipamentoId=${eq.equipamentoId}`)}
                                         >
@@ -124,9 +125,19 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
                                         <div className="space-list-card-actions">
                                             <button
                                                 type="button"
+                                                className="button-icon-edit"
+                                                onClick={() => navigate(`/equipamentos/${eq.equipamentoId}/editar`)}
+                                                aria-label={`Editar ${eq.nome}`}
+                                                title="Editar equipamento"
+                                            >
+                                                <ZeniteIcon name="pencil" size={20} />
+                                            </button>
+                                            <button
+                                                type="button"
                                                 className="button-icon-danger"
                                                 onClick={() => handleExcluir(eq.equipamentoId)}
                                                 aria-label={`Excluir ${eq.nome}`}
+                                                title="Excluir equipamento"
                                             >
                                                 <ZeniteIcon name="trash" size={22} />
                                             </button>
@@ -141,6 +152,7 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
 
             <div className="detail-action-bar detail-action-bar-one">
                 <button
+                    type="button"
                     className="button academia-action-btn-main"
                     onClick={() => navigate('/equipamentos/novo')}
                 >

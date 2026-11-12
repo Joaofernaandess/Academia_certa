@@ -1,4 +1,75 @@
 /* =========================================================
+   SCROLLBAR GLOBAL: AUTO-HIDE (APARECE SÓ AO ROLAR)
+   E SEMPRE COLADA NO CANTO DIREITO DA PÁGINA
+   ========================================================= */
+
+* {
+    scrollbar-width: thin !important;
+    scrollbar-color: transparent transparent !important;
+}
+
+*.is-scrolling {
+    scrollbar-color: var(--zf-scrollbar-thumb) transparent !important;
+}
+
+*::-webkit-scrollbar {
+    display: block !important;
+    width: 6px !important;
+    height: 6px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+    border-radius: 999px !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: transparent !important;
+    border-radius: 999px !important;
+    border: none !important;
+    transition: background-color 0.25s ease;
+}
+
+*.is-scrolling::-webkit-scrollbar-thumb {
+    background-color: var(--zf-scrollbar-thumb) !important;
+}
+
+*.is-scrolling::-webkit-scrollbar-thumb:hover {
+    background-color: var(--zf-scrollbar-thumb-hover) !important;
+}
+
+/* Expande a área principal para 100% da tela para a scrollbar ficar no canto direito */
+.container.app-main,
+.app-main {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+/* Mantém cabeçalhos centralizados e joga a barra de rolagem das listas para a borda direita */
+.inventory-list-fixed {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.inventory-list-fixed-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: max(1rem, calc((100% - var(--zf-inventory-content-width, 960px)) / 2));
+    padding-right: max(1rem, calc((100% - var(--zf-inventory-content-width, 960px)) / 2));
+    box-sizing: border-box;
+}
+
+.inventory-list-scroll {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: max(1rem, calc((100% - var(--zf-inventory-content-width, 960px)) / 2));
+    padding-right: max(1rem, calc((100% - var(--zf-inventory-content-width, 960px)) / 2));
+    box-sizing: border-box;
+}
+
+/* =========================================================
    ESTILOS ESPECÍFICOS - ACADEMIA CERTA
    ========================================================= */
 
@@ -24,11 +95,15 @@
     object-fit: cover;
 }
 
-/* Página de Feedback de Equipamentos (Espelho da Imagem 1) */
+/* Página de Feedback de Equipamentos (Conteúdo centralizado + Scroll no canto da página) */
 .feedback-view-container {
-    max-width: 540px;
-    margin: 0 auto;
-    padding-bottom: 2rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: max(1rem, calc((100% - 540px) / 2));
+    padding-right: max(1rem, calc((100% - 540px) / 2));
+    padding-bottom: 5.5rem;
+    box-sizing: border-box;
 }
 
 .feedback-form-card {
@@ -65,12 +140,16 @@
     white-space: nowrap;
 }
 
-/* Seletor de Estrelas */
+/* Seletor de Estrelas na Horizontal */
+.card.feedback-stars-box,
 .feedback-stars-box {
     display: flex;
+    flex-direction: row !important;
+    align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 0.85rem;
+    gap: 14px;
+    height: auto;
+    padding: 0.55rem 0.85rem;
     border: 1px solid color-mix(in srgb, var(--zf-accent) 35%, transparent);
 }
 
@@ -97,6 +176,12 @@
     font-size: 1.1rem;
 }
 
+.feedback-history-scroll {
+    max-height: 280px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
 .feedback-history-card {
     padding: 0.9rem;
 }
@@ -117,13 +202,17 @@
 }
 
 /* =========================================================
-   MÓDULO DE TREINOS (Baseado na Imagem 2)
+   MÓDULO DE TREINOS (Conteúdo centralizado + Scroll no canto da página)
    ========================================================= */
 
 .treino-view-container {
-    max-width: 540px;
-    margin: 0 auto;
-    padding-bottom: 5rem; /* Espaço para sidebar/bottom nav */
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: max(1rem, calc((100% - 540px) / 2));
+    padding-right: max(1rem, calc((100% - 540px) / 2));
+    padding-bottom: 5.5rem;
+    box-sizing: border-box;
 }
 
 .treino-header {
@@ -136,11 +225,18 @@
     margin: 0 0 0.25rem 0;
 }
 
+.treino-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
 .treino-subtitle {
     font-size: 1rem;
     color: var(--zf-text-light);
     opacity: 0.9;
-    margin: 0 0 1rem 0;
+    margin: 0 !important;
 }
 
 .treino-progress-container {
@@ -150,16 +246,31 @@
     margin-bottom: 1.5rem;
 }
 
-.treino-progress-bar-bg {
+/* Barra de progresso nativa sem uso de style inline */
+.treino-progress-native {
+    appearance: none;
+    -webkit-appearance: none;
     width: 100%;
     height: 8px;
-    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 4px;
     overflow: hidden;
+    margin: 0;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
-.treino-progress-bar-fill {
-    height: 100%;
+.treino-progress-native::-webkit-progress-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.treino-progress-native::-webkit-progress-value {
+    background-color: #00d2ff;
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.treino-progress-native::-moz-progress-bar {
     background-color: #00d2ff;
     border-radius: 4px;
     transition: width 0.3s ease;
@@ -177,7 +288,7 @@
     padding: 1rem;
     margin-bottom: 1rem;
     border-radius: 12px;
-    background-color: var(--zf-bg-surface);
+    background-color: var(--zf-background-secondary);
     border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
 }
 
@@ -242,22 +353,6 @@
     color: #000;
 }
 
-/* =========================================================
-   MÓDULO DE TREINOS - ADIÇÕES
-   ========================================================= */
-
-/* Linha do título e botão trocar */
-.treino-title-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.treino-subtitle {
-    margin: 0 !important; /* Sobrescreve a margem anterior para alinhar com o botão */
-}
-
 /* Botão Trocar Treino */
 .treino-switch-btn {
     background: transparent;
@@ -291,7 +386,7 @@
 .treinos-modal-item {
     padding: 12px;
     border-radius: 8px;
-    background: var(--zf-bg-surface);
+    background: var(--zf-background-secondary);
     border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
     cursor: pointer;
     text-align: left;
@@ -300,12 +395,12 @@
 }
 
 .treinos-modal-item:hover {
-    background: color-mix(in srgb, var(--zf-accent) 10%, var(--zf-bg-surface));
+    background: color-mix(in srgb, var(--zf-accent) 10%, var(--zf-background-secondary));
 }
 
 .treinos-modal-item.is-active {
     border-color: var(--zf-accent);
-    background: color-mix(in srgb, var(--zf-accent) 15%, var(--zf-bg-surface));
+    background: color-mix(in srgb, var(--zf-accent) 15%, var(--zf-background-secondary));
 }
 
 /* =========================================================
@@ -313,9 +408,18 @@
    ========================================================= */
 
 .avaliacoes-admin-container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding-bottom: 3rem;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding-left: max(1rem, calc((100% - 960px) / 2));
+    padding-right: max(1rem, calc((100% - 960px) / 2));
+    padding-bottom: 3.5rem;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
 }
 
 .avaliacoes-admin-grid {
@@ -354,7 +458,7 @@
     width: 100%;
     padding: 0.9rem 1rem;
     border-radius: 10px;
-    background: var(--zf-bg-surface);
+    background: var(--zf-background-secondary);
     border: 1px solid color-mix(in srgb, var(--zf-accent) 25%, transparent);
     color: var(--zf-text-main);
     cursor: pointer;
@@ -439,7 +543,7 @@
 .avaliacoes-modal-item {
     padding: 0.85rem;
     border-radius: 8px;
-    background: var(--zf-bg-surface);
+    background: var(--zf-background-secondary);
     border: 1px solid color-mix(in srgb, var(--zf-accent) 20%, transparent);
 }
 
@@ -465,4 +569,171 @@
     font-size: 0.75rem;
     opacity: 0.65;
     margin-top: 0.35rem;
+}
+
+/* =========================================================
+   NOVO TREINO - LISTA DE EXERCÍCIOS & MODAL DE MÍDIA
+   ========================================================= */
+
+.exercicios-added-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 1rem;
+}
+
+.exercicios-added-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--zf-background-secondary) 90%, #fff);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.exercicios-added-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.exercicios-added-info strong {
+    font-size: 0.95rem;
+}
+
+.exercicios-added-info small {
+    color: var(--zf-text-light);
+    font-size: 0.8rem;
+}
+
+/* Modal de Mídia (Thumbnail animado) */
+.treino-card-thumb-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+
+.treino-card-play-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.treino-card-thumb-wrapper:hover .treino-card-play-icon {
+    opacity: 1;
+}
+
+.media-modal-card {
+    max-width: 500px !important;
+}
+
+.media-modal-content-wrapper {
+    width: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+}
+
+.media-modal-content {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+    display: block;
+}
+
+/* Ações no cabeçalho da tela de Treinos (Editar + Trocar) */
+.treino-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.treino-card-rest {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin: 2px 0 0 0;
+}
+
+/* Cards de exercícios adicionados na criação/edição de treino */
+.exercicios-empty-hint {
+    padding: 1rem;
+}
+
+.exercicios-added-card {
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: var(--zf-background-secondary);
+    border: 1px solid color-mix(in srgb, var(--zf-accent) 25%, transparent);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.exercicios-added-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exercicios-added-inputs {
+    align-items: flex-end;
+}
+
+/* Ajustes Modal de Mídia sem style inline */
+.media-modal-body {
+    padding: 1rem;
+    text-align: center;
+}
+
+.media-modal-title {
+    font-size: 1.1rem;
+}
+
+/* Botão de ícone de editar no card de equipamentos */
+.button-icon-edit {
+    background: transparent;
+    border: none;
+    color: var(--zf-accent, #D4AF37);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.button-icon-edit:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: scale(1.08);
+}
+
+/* Botão de excluir ficha no cabeçalho da tela de Treinos */
+.treino-delete-btn {
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 6px 8px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.treino-delete-btn:hover {
+    background: rgba(239, 68, 68, 0.12);
 }

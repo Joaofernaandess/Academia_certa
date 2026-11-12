@@ -43,6 +43,10 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
                         <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
 
                         {isAdmin && (
+                            <NavLink to="/exercicios" onClick={closeMenu}>Exercícios</NavLink>
+                        )}
+
+                        {isAdmin && (
                             <NavLink to="/equipamentos-avaliados" onClick={closeMenu}>Equipamentos Avaliados</NavLink>
                         )}
                         {isAdmin && (

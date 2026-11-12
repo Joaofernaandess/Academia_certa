@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { listarUnidadesOrganizacionais } from '../services/unidadeOrganizacionalService';
+import { openFloatingCombobox } from '../styles/js/components/floating-action-menu';
 import { formatCnpj } from '../utils/cnpj';
 import { carregarTodasPaginas } from '../utils/paginatedFetch';
 
@@ -9,9 +10,7 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
     const [isOpen, setIsOpen] = useState(false);
     const [search, setSearch] = useState('');
     const [highlightedIndex, setHighlightedIndex] = useState(-1);
-    const [listPosition, setListPosition] = useState(null);
     const [loading, setLoading] = useState(true);
-
     const comboRef = useRef(null);
     const listRef = useRef(null);
 
@@ -55,26 +54,11 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
     }, [highlightedIndex, isOpen]);
 
     useEffect(() => {
-        if (!isOpen || !comboRef.current) {
-            setListPosition(null);
-            return;
-        }
+        if (!isOpen || !comboRef.current) return undefined;
+
         const updateListPosition = () => {
             if (!comboRef.current) return;
-            const rect = comboRef.current.getBoundingClientRect();
-            const visualViewport = window.visualViewport;
-            const viewportGap = 12;
-            const viewportBottom = visualViewport
-                ? visualViewport.offsetTop + visualViewport.height
-                : window.innerHeight;
-            const availableHeight = Math.max(120, viewportBottom - rect.bottom - viewportGap);
-
-            setListPosition({
-                top: rect.bottom + window.scrollY + 5,
-                left: rect.left + window.scrollX,
-                width: rect.width,
-                maxHeight: Math.min(250, availableHeight)
-            });
+            openFloatingCombobox(comboRef.current);
         };
 
         updateListPosition();
@@ -182,18 +166,13 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
                     }}
                     className="combobox-clear-button"
                 >
+                    ✕
                 </div>
             )}
-            {isOpen && listPosition && createPortal(
+            {isOpen && createPortal(
                 <ul
-                    className="zf-combobox-list zf-combobox-list-floating is-open"
+                    className="zf-combobox-list zf-combobox-list-portal is-open"
                     ref={listRef}
-                    style={{
-                        top: `${listPosition.top}px`,
-                        left: `${listPosition.left}px`,
-                        width: `${listPosition.width}px`,
-                        maxHeight: `${listPosition.maxHeight}px`
-                    }}
                 >
                     {listaOpcoes}
                 </ul>,
@@ -204,9 +183,7 @@ export default function UnidadeComboBox({ value, onChange, error, errorMessage, 
 
     return (
         <div className="mb-1">
-            <label>
-                Unidade Organizacional
-            </label>
+            <label>Unidade Organizacional</label>
             {action ? (
                 <div className="zf-input-with-action">
                     {combo}
