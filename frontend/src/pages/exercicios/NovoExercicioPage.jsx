@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ArquivoUploadArea from '../../components/ArquivoUploadArea';
 import LoadingButton from '../../components/LoadingButton';
 import LoadingWaves from '../../components/LoadingWaves';
 import MessageModal from '../../components/MessageModal';
@@ -113,13 +114,17 @@ export default function NovoExercicioPage({ token, unidadeOrganizacionalId }) {
                             </div>
 
                             <div className="column-12 mb-1">
-                                <label className="label-sm">URL do Arquivo (Vídeo MP4, GIF ou Imagem)</label>
-                                <input
-                                    type="text"
-                                    placeholder="https://exemplo.com/execucao-supino.gif"
+                                <label className="label-sm">Demonstração do Exercício (Imagem, GIF ou Vídeo)</label>
+                                <ArquivoUploadArea
                                     value={formData.arquivoUrl}
-                                    onChange={e => setFormData({ ...formData, arquivoUrl: e.target.value })}
-                                    className="w-full no-field-margin"
+                                    onChange={(novoArquivo) => setFormData({ ...formData, arquivoUrl: novoArquivo })}
+                                    arquivoInputId="exercicio-arquivo-input"
+                                    fotoInputId="exercicio-foto-input"
+                                    aceitarArquivo="image/*,video/mp4,video/webm"
+                                    mensagemVazia="Envie uma foto, GIF ou vídeo da execução do exercício"
+                                    variant="wizard"
+                                    headerContent={<span className="label-sm no-margin">Prévia da Execução</span>}
+                                    onError={setErro}
                                 />
                             </div>
                         </div>

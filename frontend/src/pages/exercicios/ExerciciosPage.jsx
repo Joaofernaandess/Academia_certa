@@ -6,7 +6,7 @@ import ZeniteIcon from '../../components/ZeniteIcon';
 import { excluirExercicio, listarExercicios } from '../../services/exercicioService';
 import { extrairErro, extrairMensagem } from '../../utils/apiUtils';
 
-export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
+export default function ExerciciosPage({ token, unidadeOrganizacionalId, canManage }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [exercicios, setExercicios] = useState([]);
@@ -44,6 +44,7 @@ export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
     }, [location.pathname, location.state, navigate]);
 
     const handleExcluir = async (exercicioId) => {
+        if (!canManage) return;
         try {
             const res = await excluirExercicio({ token, exercicioId });
             if (res.ok) {
@@ -61,6 +62,8 @@ export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
         ex.nome?.toLowerCase().includes(pesquisa.toLowerCase()) ||
         ex.descricao?.toLowerCase().includes(pesquisa.toLowerCase())
     );
+
+    const ghostClass = !canManage ? 'academia-btn-smoke-disabled' : '';
 
     return (
         <div className="w-full inventory-list-fixed">
@@ -117,8 +120,9 @@ export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
                                     <div className="inventory-card-footer space-list-card-footer">
                                         <button
                                             type="button"
-                                            className="button button-outline inventory-card-action"
-                                            onClick={() => navigate(`/exercicios/${ex.exercicioId}/editar`)}
+                                            disabled={!canManage}
+                                            className={`button button-outline inventory-card-action ${ghostClass}`}
+                                            onClick={() => canManage && navigate(`/exercicios/${ex.exercicioId}/editar`)}
                                         >
                                             <ZeniteIcon name="pencil" size={16} />
                                             <span className="button-icon-text">Editar</span>
@@ -126,9 +130,11 @@ export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
                                         <div className="space-list-card-actions">
                                             <button
                                                 type="button"
-                                                className="button-icon-danger"
+                                                disabled={!canManage}
+                                                className={`button-icon-danger ${ghostClass}`}
                                                 onClick={() => handleExcluir(ex.exercicioId)}
                                                 aria-label={`Excluir ${ex.nome}`}
+                                                title={canManage ? 'Excluir exercício' : 'Apenas gestores e administradores'}
                                             >
                                                 <ZeniteIcon name="trash" size={22} />
                                             </button>
@@ -144,8 +150,9 @@ export default function ExerciciosPage({ token, unidadeOrganizacionalId }) {
             <div className="detail-action-bar detail-action-bar-one">
                 <button
                     type="button"
-                    className="button academia-action-btn-main"
-                    onClick={() => navigate('/exercicios/novo')}
+                    disabled={!canManage}
+                    className={`button academia-action-btn-main ${ghostClass}`}
+                    onClick={() => canManage && navigate('/exercicios/novo')}
                 >
                     <ZeniteIcon name="plus" size={22} />
                     <span className="button-icon-text">Novo Exercício</span>

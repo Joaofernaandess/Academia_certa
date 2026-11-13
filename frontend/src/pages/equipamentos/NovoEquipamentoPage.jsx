@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import ArquivoUploadArea from '../../components/ArquivoUploadArea';
 import LoadingButton from '../../components/LoadingButton';
 import LoadingWaves from '../../components/LoadingWaves';
 import MessageModal from '../../components/MessageModal';
@@ -113,13 +114,17 @@ export default function NovoEquipamentoPage({ token, unidadeOrganizacionalId }) 
                             </div>
 
                             <div className="column-12 mb-1">
-                                <label className="label-sm">URL da Foto do Equipamento (Opcional)</label>
-                                <input
-                                    type="text"
-                                    placeholder="https://exemplo.com/foto-crossover.jpg"
+                                <label className="label-sm">Foto do Equipamento</label>
+                                <ArquivoUploadArea
                                     value={formData.imagemUrl}
-                                    onChange={e => setFormData({ ...formData, imagemUrl: e.target.value })}
-                                    className="w-full no-field-margin"
+                                    onChange={(novaImagem) => setFormData({ ...formData, imagemUrl: novaImagem })}
+                                    arquivoInputId="equipamento-arquivo-input"
+                                    fotoInputId="equipamento-foto-input"
+                                    aceitarArquivo="image/*"
+                                    mensagemVazia="Envie uma foto do equipamento ou tire uma foto na hora"
+                                    variant="wizard"
+                                    headerContent={<span className="label-sm no-margin">Prévia da Imagem</span>}
+                                    onError={setErro}
                                 />
                             </div>
                         </div>

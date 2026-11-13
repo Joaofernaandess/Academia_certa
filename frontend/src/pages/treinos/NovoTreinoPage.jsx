@@ -8,7 +8,7 @@ import ZeniteIcon from '../../components/ZeniteIcon';
 import { atualizarTreino, criarTreino, obterTreino } from '../../services/treinoService';
 import { aplicarErrosCampos, extrairErro } from '../../utils/apiUtils';
 
-export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuarioId, isAdmin }) {
+export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuarioId, canManage }) {
     const navigate = useNavigate();
     const { treinoId } = useParams();
     const isEdit = Boolean(treinoId);
@@ -115,6 +115,8 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
         return <LoadingWaves variant="cards" rows={3} label="Carregando dados do treino" />;
     }
 
+    const ghostClass = !canManage ? 'academia-btn-smoke-disabled' : '';
+
     return (
         <div className="detail-view detail-form-view space-detail-form-view space-create-form-view w-full">
             <div className="detail-heading">
@@ -158,17 +160,16 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
                                     error={!!fieldErrors.Exercicios}
                                     errorMessage={fieldErrors.Exercicios}
                                     action={
-                                        isAdmin ? (
-                                            <button
-                                                type="button"
-                                                className="button zf-input-with-action__button"
-                                                aria-label="Cadastrar novo exercício"
-                                                title="Novo Exercício"
-                                                onClick={() => navigate('/exercicios/novo')}
-                                            >
-                                                <ZeniteIcon name="plus" size={22} />
-                                            </button>
-                                        ) : null
+                                        <button
+                                            type="button"
+                                            disabled={!canManage}
+                                            className={`button zf-input-with-action__button ${ghostClass}`}
+                                            aria-label="Cadastrar novo exercício"
+                                            title={canManage ? 'Novo Exercício' : 'Apenas gestores e administradores'}
+                                            onClick={() => canManage && navigate('/exercicios/novo')}
+                                        >
+                                            <ZeniteIcon name="plus" size={22} />
+                                        </button>
                                     }
                                 />
                             </div>

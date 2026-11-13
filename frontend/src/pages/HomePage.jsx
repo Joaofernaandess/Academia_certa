@@ -11,7 +11,6 @@ import { getUserFromToken } from '../utils/authUser';
 
 export default function HomePage({ token, onLogout }) {
     const usuario = useMemo(() => getUserFromToken(token), [token]);
-
     const {
         erro,
         sucesso,
@@ -24,13 +23,14 @@ export default function HomePage({ token, onLogout }) {
         clearMessages,
         isSaving
     } = useProfileForm({ token, usuario });
-
     const pwaInstall = usePwaInstall();
+
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [nomeUnidadeOrganizacional, setNomeUnidadeOrganizacional] = useState(usuario.unidadeOrganizacionalNome || '');
 
     useEffect(() => {
         let cancelado = false;
+
         if (usuario.unidadeOrganizacionalNome) {
             setNomeUnidadeOrganizacional(usuario.unidadeOrganizacionalNome);
             return () => { cancelado = true; };
@@ -59,21 +59,26 @@ export default function HomePage({ token, onLogout }) {
     return (
         <div className="app-shell">
             <input type="checkbox" id="menu-toggle" className="sidebar-checkbox" />
+
             <AppHeader />
+
             <Sidebar
                 isAdmin={usuario.isAdmin}
+                canManage={usuario.canManage}
                 isInstalled={pwaInstall.isInstalled}
                 organizacaoNome={nomeUnidadeOrganizacional}
                 onInstallClick={pwaInstall.install}
                 onLogoutClick={() => setShowLogoutModal(true)}
                 usuarioNome={usuario.nome}
             />
+
             <main className="container app-main">
                 <AuthenticatedRoutes
                     fieldErrors={fieldErrors}
                     formData={formData}
                     hasProfileChanges={hasChanges}
                     isAdmin={usuario.isAdmin}
+                    canManage={usuario.canManage}
                     isCebudv={isCebudv}
                     onCancelProfile={handleCancelProfile}
                     onChangeProfile={setFormData}

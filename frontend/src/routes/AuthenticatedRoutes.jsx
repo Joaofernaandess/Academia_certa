@@ -18,6 +18,7 @@ export default function AuthenticatedRoutes({
     formData,
     hasProfileChanges,
     isAdmin,
+    canManage,
     onCancelProfile,
     onChangeProfile,
     onSubmitProfile,
@@ -31,19 +32,20 @@ export default function AuthenticatedRoutes({
             <Route index element={<HomeHero />} />
 
             <Route path="treinos" element={<TreinosPage token={token} usuarioId={usuarioId} usuarioNome={formData.nome} />} />
-            <Route path="treinos/novo" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} isAdmin={isAdmin} />} />
-            <Route path="treinos/:treinoId/editar" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} isAdmin={isAdmin} />} />
+            <Route path="treinos/novo" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} canManage={canManage} />} />
+            <Route path="treinos/:treinoId/editar" element={<NovoTreinoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} canManage={canManage} />} />
 
-            <Route path="equipamentos" element={<EquipamentosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
-            <Route path="equipamentos/novo" element={<NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
-            <Route path="equipamentos/:equipamentoId/editar" element={<NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} />} />
-            <Route path="feedback" element={<FeedbackEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} />} />
+            <Route path="equipamentos" element={<EquipamentosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} canManage={canManage} />} />
+            <Route path="equipamentos/novo" element={canManage ? <NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/equipamentos" replace />} />
+            <Route path="equipamentos/:equipamentoId/editar" element={canManage ? <NovoEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/equipamentos" replace />} />
 
-            <Route path="exercicios" element={isAdmin ? <ExerciciosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/" replace />} />
-            <Route path="exercicios/novo" element={isAdmin ? <NovoExercicioPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/" replace />} />
-            <Route path="exercicios/:exercicioId/editar" element={isAdmin ? <NovoExercicioPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/" replace />} />
+            <Route path="exercicios" element={<ExerciciosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} canManage={canManage} />} />
+            <Route path="exercicios/novo" element={canManage ? <NovoExercicioPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/exercicios" replace />} />
+            <Route path="exercicios/:exercicioId/editar" element={canManage ? <NovoExercicioPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/exercicios" replace />} />
 
-            <Route path="equipamentos-avaliados" element={isAdmin ? <EquipamentosAvaliadosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/" replace />} />
+            <Route path="feedback" element={canManage ? <FeedbackEquipamentoPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} usuarioId={usuarioId} /> : <Navigate to="/" replace />} />
+            <Route path="equipamentos-avaliados" element={canManage ? <EquipamentosAvaliadosPage token={token} unidadeOrganizacionalId={unidadeOrganizacionalId} /> : <Navigate to="/" replace />} />
+
             <Route path="aprovar-usuarios" element={isAdmin ? <ValidarUsuariosView token={token} /> : <Navigate to="/" replace />} />
             <Route path="aprovar-empresas" element={isAdmin ? <AprovarUnidadeOrganizacionalView token={token} /> : <Navigate to="/" replace />} />
 

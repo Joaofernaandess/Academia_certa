@@ -2,6 +2,7 @@ import { parseJwt } from './jwt';
 
 export const getUserFromToken = (token) => {
     const decoded = parseJwt(token);
+
     if (!decoded) {
         return {
             usuarioId: '',
@@ -9,11 +10,16 @@ export const getUserFromToken = (token) => {
             unidadeOrganizacionalId: '',
             unidadeOrganizacionalNome: '',
             nome: '',
-            isAdmin: false
+            role: 'Normal',
+            isAdmin: false,
+            isGestor: false,
+            canManage: false
         };
     }
 
-    const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role || '';
+    const role = decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'] || decoded.role || 'Normal';
+    const isAdmin = role === 'Admin';
+    const isGestor = role === 'Gestor';
 
     return {
         usuarioId: decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] || decoded.nameid || '',
@@ -23,6 +29,9 @@ export const getUserFromToken = (token) => {
         nome: decoded.Nome || decoded.nome || '',
         cadastroCompleto: decoded.CadastroCompleto === 'True' || decoded.CadastroCompleto === true,
         jornadaUsuario: decoded.JornadaUsuario || '',
-        isAdmin: role === 'Admin'
+        role,
+        isAdmin,
+        isGestor,
+        canManage: isAdmin || isGestor
     };
 };

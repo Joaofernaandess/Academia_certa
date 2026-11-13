@@ -87,7 +87,11 @@ export default function TreinosPage({ token, usuarioId, usuarioNome }) {
 
     const isVideo = (url) => {
         if (!url) return false;
-        return url.toLowerCase().endsWith('.mp4') || url.toLowerCase().endsWith('.webm');
+        return (
+            url.startsWith('data:video/') ||
+            url.toLowerCase().endsWith('.mp4') ||
+            url.toLowerCase().endsWith('.webm')
+        );
     };
 
     if (loading) {

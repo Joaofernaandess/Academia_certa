@@ -6,7 +6,7 @@ import ZeniteIcon from '../../components/ZeniteIcon';
 import { excluirEquipamento, listarEquipamentos } from '../../services/equipamentoService';
 import { extrairErro, extrairMensagem } from '../../utils/apiUtils';
 
-export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
+export default function EquipamentosPage({ token, unidadeOrganizacionalId, canManage }) {
     const navigate = useNavigate();
     const location = useLocation();
     const [equipamentos, setEquipamentos] = useState([]);
@@ -44,6 +44,7 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
     }, [location.pathname, location.state, navigate]);
 
     const handleExcluir = async (equipamentoId) => {
+        if (!canManage) return;
         try {
             const res = await excluirEquipamento({ token, equipamentoId });
             if (res.ok) {
@@ -61,6 +62,8 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
         e.nome?.toLowerCase().includes(pesquisa.toLowerCase()) ||
         e.grupoMuscular?.toLowerCase().includes(pesquisa.toLowerCase())
     );
+
+    const ghostClass = !canManage ? 'academia-btn-smoke-disabled' : '';
 
     return (
         <div className="w-full inventory-list-fixed">
@@ -117,27 +120,30 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
                                     <div className="inventory-card-footer space-list-card-footer">
                                         <button
                                             type="button"
-                                            className="button button-outline inventory-card-action"
-                                            onClick={() => navigate(`/feedback?equipamentoId=${eq.equipamentoId}`)}
+                                            disabled={!canManage}
+                                            className={`button button-outline inventory-card-action ${ghostClass}`}
+                                            onClick={() => canManage && navigate(`/feedback?equipamentoId=${eq.equipamentoId}`)}
                                         >
                                             Avaliar
                                         </button>
                                         <div className="space-list-card-actions">
                                             <button
                                                 type="button"
-                                                className="button-icon-edit"
-                                                onClick={() => navigate(`/equipamentos/${eq.equipamentoId}/editar`)}
+                                                disabled={!canManage}
+                                                className={`button-icon-edit ${ghostClass}`}
+                                                onClick={() => canManage && navigate(`/equipamentos/${eq.equipamentoId}/editar`)}
                                                 aria-label={`Editar ${eq.nome}`}
-                                                title="Editar equipamento"
+                                                title={canManage ? 'Editar equipamento' : 'Apenas gestores e administradores'}
                                             >
                                                 <ZeniteIcon name="pencil" size={20} />
                                             </button>
                                             <button
                                                 type="button"
-                                                className="button-icon-danger"
+                                                disabled={!canManage}
+                                                className={`button-icon-danger ${ghostClass}`}
                                                 onClick={() => handleExcluir(eq.equipamentoId)}
                                                 aria-label={`Excluir ${eq.nome}`}
-                                                title="Excluir equipamento"
+                                                title={canManage ? 'Excluir equipamento' : 'Apenas gestores e administradores'}
                                             >
                                                 <ZeniteIcon name="trash" size={22} />
                                             </button>
@@ -153,8 +159,9 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId }) {
             <div className="detail-action-bar detail-action-bar-one">
                 <button
                     type="button"
-                    className="button academia-action-btn-main"
-                    onClick={() => navigate('/equipamentos/novo')}
+                    disabled={!canManage}
+                    className={`button academia-action-btn-main ${ghostClass}`}
+                    onClick={() => canManage && navigate('/equipamentos/novo')}
                 >
                     <ZeniteIcon name="plus" size={22} />
                     <span className="button-icon-text">Novo Equipamento</span>

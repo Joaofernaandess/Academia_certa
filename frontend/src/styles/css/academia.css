@@ -737,3 +737,122 @@
 .treino-delete-btn:hover {
     background: rgba(239, 68, 68, 0.12);
 }
+
+/* =========================================================
+   UPLOAD DE IMAGEM / CÂMERA (EQUIPAMENTOS E EXERCÍCIOS)
+   ========================================================= */
+
+.academia-upload-wrapper {
+    width: 100%;
+}
+
+.academia-upload-dropzone {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.academia-upload-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+    width: 100%;
+}
+
+.academia-upload-btn {
+    flex: 1 1 140px;
+    max-width: 220px;
+    padding: 0.55rem 1rem;
+    font-size: 0.9rem;
+}
+
+.academia-upload-preview-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 1px dashed var(--zf-accent);
+    background-color: transparent;
+}
+
+.academia-upload-preview-box {
+    height: 200px;
+    border: none;
+    background: transparent;
+}
+
+.academia-upload-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+/* =========================================================
+   EFEITO FANTASMA / FUMAÇA PARA BOTÕES BLOQUEADOS (PERFIL NORMAL)
+   ========================================================= */
+
+.academia-btn-smoke-disabled,
+.academia-btn-smoke-disabled:disabled,
+.button.academia-btn-smoke-disabled:disabled {
+    position: relative;
+    overflow: hidden;
+    opacity: 0.36 !important;
+    filter: blur(0.45px) grayscale(65%);
+    cursor: not-allowed !important;
+    pointer-events: none !important;
+    user-select: none;
+    box-shadow: none !important;
+    transform: none !important;
+}
+
+.academia-btn-smoke-disabled::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(148, 163, 184, 0.28) 60%,
+        rgba(15, 23, 42, 0.45) 100%
+    );
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(1.5px);
+    pointer-events: none;
+}
+
+/* =========================================================
+   SUPORTE VISUAL GLASS / BLUR DO ARQUIVOUPLOADAREA
+   ========================================================= */
+
+.file-preview-glass-wrapper,
+.image-preview-modal-body-glass {
+    position: relative;
+    overflow: hidden;
+}
+
+.file-preview-blur-bg,
+.image-preview-modal-blur-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: blur(18px) brightness(0.55);
+    transform: scale(1.1);
+    pointer-events: none;
+    z-index: 0;
+}
+
+.file-preview-image-glass {
+    position: relative;
+    z-index: 1;
+    background-color: transparent !important;
+}

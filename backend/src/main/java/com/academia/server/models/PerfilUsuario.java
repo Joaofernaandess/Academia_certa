@@ -5,7 +5,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum PerfilUsuario {
     Admin(1),
-    Normal(2);
+    Normal(2),
+    Gestor(3);
 
     private final int valor;
 
@@ -21,10 +22,14 @@ public enum PerfilUsuario {
     @JsonCreator
     public static PerfilUsuario fromValor(Object valor) {
         if (valor instanceof Number num) {
-            return num.intValue() == 1 ? Admin : Normal;
+            int v = num.intValue();
+            if (v == 1) return Admin;
+            if (v == 3) return Gestor;
+            return Normal;
         }
         if (valor instanceof String str) {
             if ("1".equals(str) || "Admin".equalsIgnoreCase(str)) return Admin;
+            if ("3".equals(str) || "Gestor".equalsIgnoreCase(str)) return Gestor;
         }
         return Normal;
     }
