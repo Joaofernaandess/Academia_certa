@@ -856,3 +856,114 @@
     z-index: 1;
     background-color: transparent !important;
 }
+
+/* =========================================================
+   TELA DO ADMIN: GERENCIAR PERFIS DE USUÁRIOS
+   ========================================================= */
+
+.perfil-user-card {
+    justify-content: space-between;
+}
+
+.perfil-selector-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+.perfil-selector-btn {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid color-mix(in srgb, var(--zf-accent) 30%, transparent);
+    background-color: transparent;
+    color: var(--zf-text-main);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.perfil-selector-btn:hover:not(:disabled) {
+    border-color: var(--zf-accent);
+    color: var(--zf-text-light);
+    background-color: color-mix(in srgb, var(--zf-accent) 10%, transparent);
+}
+
+.perfil-selector-btn.is-active {
+    background-color: var(--zf-accent);
+    border-color: var(--zf-accent);
+    color: var(--zf-background-primary);
+    font-weight: 700;
+}
+
+[data-theme="light"] .perfil-selector-btn.is-active {
+    color: #ffffff;
+}
+
+.perfil-selector-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* =========================================================
+   CARD PRINCIPAL UNIFICADO DA TELA DE TREINOS
+   ========================================================= */
+
+.card.treino-main-surface,
+.treino-main-surface {
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    overflow: visible;
+    transform: none !important;
+}
+
+.treino-gestor-filter-box {
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--zf-accent) 22%, transparent);
+}
+
+.treino-gestor-filter-box > .mb-1 {
+    margin-bottom: 0 !important;
+}
+
+.treino-empty-box {
+    padding: 2.25rem 1rem !important;
+}
+
+.treino-exercises-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.treino-exercises-list .treino-card {
+    margin-bottom: 0;
+    background-color: color-mix(in srgb, var(--zf-background-primary) 55%, var(--zf-background-secondary));
+}
+
+/* =========================================================
+   AJUSTE DE CORES: VARIÁVEL DE DESTAQUE DO SISTEMA (--zf-accent)
+   ========================================================= */
+
+.treino-progress-native::-webkit-progress-value {
+    background-color: var(--zf-accent, #D4AF37) !important;
+    border-radius: 4px;
+}
+
+.treino-progress-native::-moz-progress-bar {
+    background-color: var(--zf-accent, #D4AF37) !important;
+    border-radius: 4px;
+}
+
+.treino-checkbox.is-checked {
+    background-color: var(--zf-accent, #D4AF37) !important;
+    border-color: var(--zf-accent, #D4AF37) !important;
+    color: var(--zf-background-primary, #020D2A) !important;
+}

@@ -8,10 +8,16 @@ const isIOS = () => {
     return /iPad|iPhone|iPod/.test(ua) && !window.MSStream;
 };
 
-export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInstallClick, onLogoutClick, usuarioNome }) {
+export default function Sidebar({
+    isAdmin,
+    canManage,
+    isInstalled,
+    organizacaoNome,
+    onInstallClick,
+    onLogoutClick,
+    usuarioNome
+}) {
     const navigate = useNavigate();
-
-    const isCebudv = organizacaoNome?.toUpperCase().startsWith('CEBUDV');
 
     const closeMenu = () => {
         const menuToggle = document.getElementById('menu-toggle');
@@ -26,28 +32,31 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
             <div className="sidebar-overlay">
                 <label htmlFor="menu-toggle" className="sidebar-backdrop-toggle"></label>
             </div>
+
             <aside className="sidebar">
                 <button type="button" className="sidebar-close-icon" onClick={closeMenu} aria-label="Fechar menu">
                     <ZeniteIcon name="x" size={22} />
                 </button>
-
                 <div className="sidebar-body">
                     <div className="sidebar-brand-block">
                         <h3 className="sidebar-title">Gestão Fitness</h3>
                         <p className="sidebar-subtitle">Academia Certa</p>
                     </div>
+
                     <div className="sidebar-nav">
                         <NavLink to="/" end onClick={closeMenu}>Início</NavLink>
                         <NavLink to="/treinos" onClick={closeMenu}>Treinos</NavLink>
                         <NavLink to="/equipamentos" onClick={closeMenu}>Equipamentos</NavLink>
-                        <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
+                        <NavLink to="/exercicios" onClick={closeMenu}>Exercícios</NavLink>
 
-                        {isAdmin && (
-                            <NavLink to="/exercicios" onClick={closeMenu}>Exercícios</NavLink>
+                        {canManage && (
+                            <NavLink to="/feedback" onClick={closeMenu}>Feedback</NavLink>
                         )}
-
-                        {isAdmin && (
+                        {canManage && (
                             <NavLink to="/equipamentos-avaliados" onClick={closeMenu}>Equipamentos Avaliados</NavLink>
+                        )}
+                        {isAdmin && (
+                            <NavLink to="/gerenciar-perfis" onClick={closeMenu}>Gerenciar Perfis</NavLink>
                         )}
                         {isAdmin && (
                             <NavLink to="/aprovar-usuarios" onClick={closeMenu}>Aprovar Usuários</NavLink>
@@ -55,6 +64,7 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
                         {isAdmin && (
                             <NavLink to="/aprovar-empresas" onClick={closeMenu}>Aprovar Empresas</NavLink>
                         )}
+
                         {!isInstalled && (
                             <NavLink
                                 to="/instalar-ios"
@@ -66,7 +76,7 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
                                     if (!installed) navigate('/instalar-ios');
                                 }}
                             >
-                                Adicionar a tela inicial
+                                Adicionar à tela inicial
                             </NavLink>
                         )}
                     </div>
@@ -89,7 +99,6 @@ export default function Sidebar({ isAdmin, isInstalled, organizacaoNome, onInsta
                     <button onClick={onLogoutClick} className="button button-danger sidebar-logout-button">
                         Sair do Sistema
                     </button>
-
                     <div className="sidebar-version">
                         <p className="sidebar-version">v{APP_VERSION}</p>
                     </div>

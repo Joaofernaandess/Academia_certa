@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import EquipamentoComboBox from '../../components/EquipamentoCombobox';
+import EquipamentoComboBox from '../../components/EquipamentoComboBox';
 import LoadingButton from '../../components/LoadingButton';
 import MessageModal from '../../components/MessageModal';
 import ZeniteIcon from '../../components/ZeniteIcon';
@@ -10,7 +10,7 @@ import { aplicarErrosCampos, extrairErro, extrairMensagem } from '../../utils/ap
 
 const IMAGEM_PADRAO = 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=900&q=80';
 
-export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId, usuarioId }) {
+export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId, usuarioId, canManage }) {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const equipamentoUrlId = searchParams.get('equipamentoId') || '';
@@ -28,20 +28,29 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
     const [loading, setLoading] = useState(false);
     const [loadingEquipamentos, setLoadingEquipamentos] = useState(true);
 
+    useEffect(() => {
+        if (!canManage && !veioDeEquipamentos) {
+            navigate('/equipamentos', { replace: true });
+        }
+    }, [canManage, navigate, veioDeEquipamentos]);
+
     const carregarDados = useCallback(async () => {
         if (!unidadeOrganizacionalId) return;
         setLoadingEquipamentos(true);
         try {
-            const [resEq, resFb] = await Promise.all([
-                listarEquipamentos({ token, unidadeOrganizacionalId }),
-                listarFeedbacks({ token, unidadeOrganizacionalId })
-            ]);
-            if (resEq.ok) {
+            const requisicoes = [listarEquipamentos({ token, unidadeOrganizacionalId })];
+            if (canManage) {
+                requisicoes.push(listarFeedbacks({ token, unidadeOrganizacionalId }));
+            }
+
+            const [resEq, resFb] = await Promise.all(requisicoes);
+
+            if (resEq?.ok) {
                 const listaEq = await resEq.json();
                 setEquipamentos(listaEq);
                 setEquipamentoId(prev => prev || (listaEq.length > 0 ? listaEq[0].equipamentoId : ''));
             }
-            if (resFb.ok) {
+            if (canManage && resFb?.ok) {
                 setFeedbacks(await resFb.json());
             }
         } catch (e) {
@@ -49,7 +58,7 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
         } finally {
             setLoadingEquipamentos(false);
         }
-    }, [token, unidadeOrganizacionalId]);
+    }, [canManage, token, unidadeOrganizacionalId]);
 
     useEffect(() => {
         carregarDados();
@@ -85,7 +94,7 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
 
             if (res.ok) {
                 const mensagem = await extrairMensagem(res);
-                if (veioDeEquipamentos) {
+                if (veioDeEquipamentos || !canManage) {
                     navigate('/equipamentos', { replace: true, state: { sucesso: mensagem } });
                     return;
                 }
@@ -104,6 +113,8 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
             setLoading(false);
         }
     };
+
+    const exibirBotaoVoltar = veioDeEquipamentos || !canManage;
 
     return (
         <div className="detail-view w-full feedback-view-container">
@@ -162,7 +173,7 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                 </div>
             </form>
 
-            {feedbacks.length > 0 && (
+            {canManage && feedbacks.length > 0 && (
                 <div className="mt-2">
                     <h3 className="page-title mb-1 feedback-history-title">Últimos Feedbacks</h3>
                     <div className="feedback-history-scroll">
@@ -184,8 +195,8 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                 </div>
             )}
 
-            <div className={`detail-action-bar ${veioDeEquipamentos ? 'detail-action-bar-two' : 'detail-action-bar-one'}`}>
-                {veioDeEquipamentos && (
+            <div className={`detail-action-bar ${exibirBotaoVoltar ? 'detail-action-bar-two' : 'detail-action-bar-one'}`}>
+                {exibirBotaoVoltar && (
                     <button
                         type="button"
                         className="button button-outline"
@@ -197,7 +208,7 @@ export default function FeedbackEquipamentoPage({ token, unidadeOrganizacionalId
                 <LoadingButton
                     type="submit"
                     form="feedback-equipamento-form"
-                    className={`button ${veioDeEquipamentos ? '' : 'academia-action-btn-main'}`}
+                    className={`button ${exibirBotaoVoltar ? '' : 'academia-action-btn-main'}`}
                     loading={loading}
                 >
                     <ZeniteIcon name="save" size={18} />

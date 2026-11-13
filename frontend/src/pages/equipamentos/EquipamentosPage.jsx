@@ -120,9 +120,8 @@ export default function EquipamentosPage({ token, unidadeOrganizacionalId, canMa
                                     <div className="inventory-card-footer space-list-card-footer">
                                         <button
                                             type="button"
-                                            disabled={!canManage}
-                                            className={`button button-outline inventory-card-action ${ghostClass}`}
-                                            onClick={() => canManage && navigate(`/feedback?equipamentoId=${eq.equipamentoId}`)}
+                                            className="button button-outline inventory-card-action"
+                                            onClick={() => navigate(`/feedback?equipamentoId=${eq.equipamentoId}`)}
                                         >
                                             Avaliar
                                         </button>

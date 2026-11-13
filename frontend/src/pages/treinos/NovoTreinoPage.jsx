@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import AlunoComboBox from '../../components/AlunoComboBox';
 import ExercicioComboBox from '../../components/ExercicioCombobox';
 import LoadingButton from '../../components/LoadingButton';
 import LoadingWaves from '../../components/LoadingWaves';
@@ -10,8 +11,16 @@ import { aplicarErrosCampos, extrairErro } from '../../utils/apiUtils';
 
 export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuarioId, canManage }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const { treinoId } = useParams();
     const isEdit = Boolean(treinoId);
+
+    const [alunoAlvoId, setAlunoAlvoId] = useState(
+        () => location.state?.alunoId || usuarioId
+    );
+    const [alunoAlvoNome, setAlunoAlvoNome] = useState(
+        () => location.state?.alunoNome || ''
+    );
 
     const [formData, setFormData] = useState({ diaSemana: '', titulo: '' });
     const [exerciciosAdicionados, setExerciciosAdicionados] = useState([]);
@@ -32,6 +41,9 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
                         diaSemana: data.diaSemana || '',
                         titulo: data.titulo || ''
                     });
+                    if (data.usuarioId) {
+                        setAlunoAlvoId(data.usuarioId);
+                    }
                     const listaFormatada = (data.exercicios || []).map((ex) => ({
                         idLocal: ex.treinoExercicioId || Math.random().toString(36).slice(2, 11),
                         exercicioId: ex.exercicioId,
@@ -75,6 +87,16 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
         setExerciciosAdicionados(prev => prev.filter(e => e.idLocal !== idLocal));
     };
 
+    const voltarParaTreinos = () => {
+        navigate('/treinos', {
+            replace: true,
+            state: {
+                alunoId: alunoAlvoId || usuarioId,
+                alunoNome: alunoAlvoNome
+            }
+        });
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (loading) return;
@@ -85,7 +107,7 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
 
         const payload = {
             unidadeOrganizacionalId,
-            usuarioId,
+            usuarioId: canManage ? (alunoAlvoId || usuarioId) : usuarioId,
             titulo: formData.titulo,
             diaSemana: formData.diaSemana,
             exercicios: exerciciosAdicionados
@@ -97,7 +119,7 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
                 : await criarTreino({ token, payload });
 
             if (response.ok) {
-                navigate('/treinos', { replace: true });
+                voltarParaTreinos();
             } else if (response.status === 400) {
                 await aplicarErrosCampos(response, setFieldErrors, setErro);
             } else {
@@ -129,6 +151,23 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
                 <div className="card detail-card detail-form-scroll-card">
                     <div className="detail-card-body">
                         <div className="row detail-form-fields">
+                            {canManage && (
+                                <div className="column-12 mb-1">
+                                    <AlunoComboBox
+                                        token={token}
+                                        unidadeOrganizacionalId={unidadeOrganizacionalId}
+                                        value={alunoAlvoId}
+                                        label="Atribuir Ficha ao Aluno:"
+                                        error={!!fieldErrors.UsuarioId}
+                                        errorMessage={fieldErrors.UsuarioId}
+                                        onChange={(id, alunoObj) => {
+                                            setAlunoAlvoId(id);
+                                            setAlunoAlvoNome(alunoObj?.nome || '');
+                                        }}
+                                    />
+                                </div>
+                            )}
+
                             <div className="column-6 mb-1">
                                 <label className="label-sm">Título do Treino</label>
                                 <input
@@ -239,7 +278,7 @@ export default function NovoTreinoPage({ token, unidadeOrganizacionalId, usuario
                 </div>
 
                 <div className="detail-action-bar detail-action-bar-two">
-                    <button type="button" className="button button-outline" onClick={() => navigate('/treinos')}>
+                    <button type="button" className="button button-outline" onClick={voltarParaTreinos}>
                         Cancelar
                     </button>
                     <LoadingButton type="submit" className="button" loading={loading}>
