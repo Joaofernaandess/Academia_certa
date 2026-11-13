@@ -36,6 +36,7 @@ public class Usuario {
         private UUID usuarioId;
         private String username;
         private String nome = "";
+        private PerfilUsuario perfil = PerfilUsuario.Normal;
         private String nomeUnidadeOrganizacional;
         private boolean cadastroCompleto;
         private JornadaUsuario jornadaUsuario;
@@ -46,6 +47,8 @@ public class Usuario {
         public void setUsername(String username) { this.username = username; }
         public String getNome() { return nome; }
         public void setNome(String nome) { this.nome = nome; }
+        public PerfilUsuario getPerfil() { return perfil; }
+        public void setPerfil(PerfilUsuario perfil) { this.perfil = perfil; }
         public String getNomeUnidadeOrganizacional() { return nomeUnidadeOrganizacional; }
         public void setNomeUnidadeOrganizacional(String nomeUnidadeOrganizacional) { this.nomeUnidadeOrganizacional = nomeUnidadeOrganizacional; }
         public boolean isCadastroCompleto() { return cadastroCompleto; }
@@ -58,5 +61,11 @@ public class Usuario {
         private String nome = "";
         public String getNome() { return nome; }
         public void setNome(String nome) { this.nome = nome; }
+    }
+
+    public static class UsuarioPerfilPatchRequest {
+        private PerfilUsuario perfil;
+        public PerfilUsuario getPerfil() { return perfil; }
+        public void setPerfil(PerfilUsuario perfil) { this.perfil = perfil; }
     }
 }

@@ -48,6 +48,15 @@ public class UsuarioRepository extends BaseRepository {
         }
     }
 
+    public int atualizarPerfil(PerfilUsuario perfil, UUID usuarioId) throws SQLException {
+        String sql = "UPDATE usuario SET perfil = ? WHERE usuario_id = ?;";
+        try (Connection conn = getConnection(); PreparedStatement cmd = conn.prepareStatement(sql)) {
+            cmd.setInt(1, perfil.getValor());
+            cmd.setObject(2, usuarioId);
+            return cmd.executeUpdate();
+        }
+    }
+
     public Usuario obter(UUID usuarioId) throws SQLException {
         String sql = """
             SELECT usuario_id, username, senha, nome, perfil, unidade_organizacional_id, cadastro_completo, jornada_usuario
@@ -76,7 +85,7 @@ public class UsuarioRepository extends BaseRepository {
     public List<Usuario.UsuarioGetResponse> obterLista(String username, UUID unidadeOrganizacionalId, Boolean cadastroCompleto, int skip, int top) throws SQLException {
         List<Usuario.UsuarioGetResponse> lista = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-            SELECT u.usuario_id, u.username, u.nome, u.unidade_organizacional_id, u.cadastro_completo, u.jornada_usuario,
+            SELECT u.usuario_id, u.username, u.nome, u.perfil, u.unidade_organizacional_id, u.cadastro_completo, u.jornada_usuario,
                    COALESCE(uo.nome_fantasia, uo.razao_social, 'Sem Unidade') AS nome_unidade
             FROM usuario u
             LEFT JOIN unidade_organizacional uo ON u.unidade_organizacional_id = uo.unidade_organizacional_id
@@ -94,13 +103,13 @@ public class UsuarioRepository extends BaseRepository {
             if (cadastroCompleto != null) cmd.setBoolean(idx++, cadastroCompleto);
             cmd.setInt(idx++, top);
             cmd.setInt(idx, skip);
-
             try (ResultSet rs = cmd.executeQuery()) {
                 while (rs.next()) {
                     Usuario.UsuarioGetResponse item = new Usuario.UsuarioGetResponse();
                     item.setUsuarioId(getUuidNullable(rs, "usuario_id"));
                     item.setUsername(rs.getString("username"));
                     item.setNome(rs.getString("nome"));
+                    item.setPerfil(PerfilUsuario.fromValor(rs.getInt("perfil")));
                     item.setCadastroCompleto(rs.getBoolean("cadastro_completo"));
                     item.setJornadaUsuario(JornadaUsuario.fromValor(rs.getInt("jornada_usuario")));
                     item.setNomeUnidadeOrganizacional(rs.getString("nome_unidade"));

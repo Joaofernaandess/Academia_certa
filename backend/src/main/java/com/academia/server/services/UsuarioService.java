@@ -48,6 +48,14 @@ public class UsuarioService extends BaseService {
 
         return usuarioId;
     }
+    
+    public void atualizarPerfil(Usuario.UsuarioPerfilPatchRequest req, UUID usuarioId) throws Exception {
+        if (req == null || req.getPerfil() == null) {
+            throw new IllegalStateException("Informe o perfil do usuário.");
+        }
+        int affected = usuarioRepository.atualizarPerfil(req.getPerfil(), usuarioId);
+        if (affected <= 0) throw new NotFoundException("Usuário não encontrado com o ID informado.");
+    }
 
     public void atualizarNome(Usuario.UsuarioPatchRequest req, UUID usuarioId) throws Exception {
         List<ValidationError> errors = createErrorList();

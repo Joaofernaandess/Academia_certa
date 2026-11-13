@@ -61,4 +61,13 @@ public class UsuarioController {
     public ResponseEntity<Usuario> obterPorId(@PathVariable UUID usuarioId) throws Exception {
         return ResponseEntity.ok(service.obter(usuarioId));
     }
+
+    @PatchMapping("/{usuarioId}/perfil")
+    public ResponseEntity<String> atualizarPerfil(
+            @PathVariable UUID usuarioId,
+            @RequestBody EncryptedRequest request) throws Exception {
+        Usuario.UsuarioPerfilPatchRequest patch = cryptoService.descriptografar(request, Usuario.UsuarioPerfilPatchRequest.class);
+        service.atualizarPerfil(patch, usuarioId);
+        return ResponseEntity.ok("Perfil do usuário atualizado com sucesso.");
+    }
 }
