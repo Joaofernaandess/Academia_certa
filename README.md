@@ -36,8 +36,10 @@ Password: admin
 Como Rodar e Testar no VS Code:
 - Abra a pasta backend no VS Code.
 - Abra o arquivo AcademiaServerApplication.java e clique em Run (acima do public static void main) ou pressione F5
-- Você verá no terminal do VS Code: Tomcat started on port 5120 (http).   
-- Inicie o seu front-end React (npm run dev).
+- Você verá no terminal do VS Code: Tomcat started on port 5120 (http).
+- abra um terminal vinculado ao seu front end.
+- rode o comando (npm install) para instalar as dependecias
+- Inicie o seu front-end React com o comando (npm run dev).
 
 
 
